@@ -1,0 +1,112 @@
+#utilities {
+  height: 45px;
+  background-color: $black-true;
+  position: relative;
+  z-index: 11;
+  padding-left: 12px;
+  border-bottom: 1px solid $gray-dark;
+  overflow: hidden;
+  position: relative;
+  font-family: $headline-reg;
+  
+  h1#page-title {
+    @include float-left;
+    font-family: $headline-reg;
+    font-size: 19px;
+    margin: 5px 0 0 0;
+    text-transform: uppercase;
+    line-height: 40px;
+  }
+
+  @include breakpoint($bp-on-now) {
+    padding-top: 0;
+    height: 62px;
+  }
+
+  .breadcrumb {
+    @include float-left;
+    color: $gray-light;
+    font-size: 0;
+    margin: 5px 0 0 0;
+    overflow: hidden;
+    text-transform: uppercase;
+    > a {
+      @include inline-block;
+      font-family: $headline-semi;
+      font-size: 19px;
+      line-height: 40px;
+      @include link-colors($gray-light, $white, $gray-light);
+      vertical-align: middle;
+    }
+    .separator {
+      @include inline-block;
+      //background: sprite($icons-sprites, 'line-arrow-gray');
+      background:  url('../images/icons-sprite.png') 0 0;
+      height: 36px;
+      margin: -4px 6px 0 5px;
+      width: 11px;
+      vertical-align: middle;
+    }
+    .show-section {
+      @include inline-block;
+      color: $white;
+      text-transform: none;
+      font-size: 19px;
+      line-height: 40px;
+    }
+
+  }
+  .show-time {
+    @include float-right;
+    color: $gray-light;
+    display: none;
+    font-size: 22px;
+    margin: 17px 35px 0;
+    text-transform: uppercase;
+  }
+
+  @include breakpoint(0px 400px) {
+    .breadcrumb {
+      margin-top: 4px;
+      > a,
+      .show-section {
+        font-size: 16px;
+      }
+    }
+  }
+
+  @include breakpoint(640px) {
+    height: 62px;
+    padding-left: 15px;
+    h1#page-title {
+      font-size: 30px;
+      line-height: 52px;
+      margin-top: 7px;
+      line-height: 52px;
+    }
+    .breadcrumb {
+      margin-top: 7px;
+      > a {
+        font-size: 30px;
+        line-height: 52px;
+      }
+      .separator {
+        margin: -5px 13px 0 8px;
+        width: 20px;
+        line-height: 52px;
+      }
+      .show-section {
+        font-size: 30px;
+        line-height: 52px;
+      }
+    }
+
+  }
+
+  @include breakpoint(1000px) {
+    .show-time {
+      display: inline;
+    }
+
+  }
+}
