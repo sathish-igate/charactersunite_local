@@ -1,0 +1,1 @@
+window.tinyMCEPreInit = {"base":"\/sites\/charactersunite\/modules\/contrib\/registry_rebuild\/sites\/all\/libraries\/tinymce\/jscripts\/tiny_mce","suffix":"","query":""};
