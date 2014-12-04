@@ -149,16 +149,177 @@ function characterunite_preprocess_node(&$variables, $hook) {
   }
   /** Description Section End **/
 
+  /** Half Module Section Start **/
+  if(!(empty($node->field_half_module_section))) {
+    $half_module = array();
+    $field_half_module_sections = field_get_items('node', $node, 'field_half_module_section');
+    if (!empty($field_half_module_sections)) {
+      $field_half_module_section_items = array();
+      foreach ($field_half_module_sections as $field_half_module_section) {
+        $field_half_module_section_items[] = entity_revision_load('field_collection_item', $field_half_module_section['revision_id']); //load current revision of collection
+      }
+      $iteration = 0;
+      foreach ($field_half_module_section_items as $item) {
+        $half_module_title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_half_module_title_1'));
+        $field_half_module_title_1 = (isset($half_module_title_1['value'])?$half_module_title_1['value']:'');
 
+        $half_module_title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_half_module_title_2'));
+        $field_half_module_title_2 = (isset($half_module_title_2['value'])?$half_module_title_2['value']:'');
+
+        $half_module_description = characterunite_reset(field_get_items('field_collection_item', $item, 'field_half_module_description'));
+        $field_half_module_description = (isset($half_module_description['value'])?$half_module_description['value']:'');
+
+        $half_module_link = characterunite_reset(field_get_items('field_collection_item', $item, 'field_half_module_link'));
+        $field_half_module_link_url = (isset($half_module_link['url'])?($half_module_link['url']):'');
+        $field_half_module_link_label = (isset($half_module_link['title'])?$half_module_link['title']:'');
+        $field_half_module_link_target = (isset($half_module_link['attributes']['target'])?($half_module_link['attributes']['target']):'');
+
+        $ds_position = characterunite_reset(field_get_items('field_collection_item', $item, 'field_ds_position'));
+        $field_ds_position = (isset($ds_position['tid'])?taxonomy_term_load($ds_position['tid'])->name:'');
+        if (substr($field_half_module_link_url, 0, 4) != 'http' && substr($field_half_module_link_url, 0, 1) != '/' && $field_half_module_link_url != '') {
+          $field_half_module_link_url = '/'.$field_half_module_link_url;
+        }
+        $half_module_link_tag = '';
+        if ($field_half_module_link_url != '') {
+          $half_module_link_tag = '<p><a href="'.$field_half_module_link_url.'" target="'.$field_half_module_link_target.'" class="uppercase">'.$field_half_module_link_label.'</a></p>';
+        }
+    
+        if ($field_half_module_title_1 != '' || $field_half_module_title_2 != '' || $field_half_module_description != '' || $field_half_module_link_url != '') {
+          $half_module[$iteration]['field_half_module_title_1'] = $field_half_module_title_1;
+          $half_module[$iteration]['field_half_module_title_2'] = $field_half_module_title_2;
+          $half_module[$iteration]['field_half_module_description'] = $field_half_module_description;
+          $half_module[$iteration]['half_module_link_tag'] = $half_module_link_tag;
+          if (strtolower($field_ds_position) != 'right') {
+            $field_half_module_left = $half_module;
+          }
+          else {
+            $field_half_module_right = $half_module;
+          }
+        }
+        $iteration++;
+      }
+      if (isset($field_half_module_left))
+        $variables['field_half_module_left'] = $field_half_module_left;
+      if (isset($field_half_module_right))
+        $variables['field_half_module_right'] = $field_half_module_right;      
+    }
+  }
+  /** Half Module Section End **/
+
+  /** Download File Section Start **/
+  if(!(empty($node->field_file_download_section))) {
+    $file_download = array();
+    $field_file_download_sections = field_get_items('node', $node, 'field_file_download_section');
+    if (!empty($field_file_download_sections)) {
+      $field_file_download_section_items = array();
+      foreach ($field_file_download_sections as $field_file_download_section) {
+        $field_file_download_section_items[] = entity_revision_load('field_collection_item', $field_file_download_section['revision_id']); //load current revision of collection
+      }
+      $iteration = 0;
+      foreach ($field_file_download_section_items as $item) {
+        $download_title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_file_download_title_1'));
+        $field_file_download_title_1 = (isset($download_title_1['value'])?$download_title_1['value']:'');
+
+        $download_title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_file_download_title_2'));
+        $field_file_download_title_2 = (isset($download_title_2['value'])?$download_title_2['value']:'');
+
+        $download_description = characterunite_reset(field_get_items('field_collection_item', $item, 'field_file_download_description'));
+        $field_file_download_description = (isset($download_description['value'])?$download_description['value']:'');
+
+        $download_file = (field_get_items('field_collection_item', $item, 'field_file_download_file'));
+
+        $ds_position = characterunite_reset(field_get_items('field_collection_item', $item, 'field_ds_position'));
+        $field_ds_position = (isset($ds_position['tid'])?taxonomy_term_load($ds_position['tid'])->name:'');
+
+        $file_download_tag = array();
+        $download_file_count = count($download_file);
+        if ($download_file_count > 0) {
+          for($file = 0; $file < $download_file_count; $file++) {
+            if ($download_file[$file]['uri'] != '')
+              $file_download_tag[$file]['file'] = '<p>'.l($download_file[$file]['description'], file_create_url($download_file[$file]['uri']), array('attributes' => array('target' => '_blank', 'class' => 'cta uppercase download'))).'</p>';
+          }
+        }
+        $download_link = field_get_items('field_collection_item', $item, 'field_file_download_link');
+
+        $file_download_link_tag = array();
+        $download_link_count = count($download_link);
+        if ($download_link_count > 0) {
+          for($link = 0; $link < $download_link_count; $link++) {
+            if ($download_link[$link]['url'] != '')
+            $file_download_link_tag[$link]['link'] = '<p>'.l($download_link[$file]['title'], file_create_url($download_link[$file]['url']), array('attributes' => array('target' => '_blank', 'class' => 'cta uppercase'))).'</p>';
+          }
+        }
+
+        if ($field_file_download_title_1 != '' || $field_file_download_title_2 != '' || $field_file_download_description != '' || $file_download_tag != '') {
+          $file_download[$iteration]['field_file_download_title_1'] = $field_file_download_title_1;
+          $file_download[$iteration]['field_file_download_title_2'] = $field_file_download_title_2;
+          $file_download[$iteration]['field_file_download_description'] = $field_file_download_description;
+          $file_download[$iteration]['file_download_tag'] = $file_download_tag;
+          $file_download[$iteration]['file_download_link_tag'] = $file_download_link_tag;
+          if (strtolower($field_ds_position) != 'right') {
+            $field_file_download_left = $file_download;
+          }
+          else {
+            $field_file_download_right = $file_download;
+          }
+        }
+        $iteration++;
+      }
+      if (isset($field_file_download_left))
+        $variables['field_file_download_left'] = $field_file_download_left;
+      if (isset($field_file_download_right))
+        $variables['field_file_download_right'] = $field_file_download_right;      
+    }
+  }
+  /** Download File Section End **/
+
+  /** Related Link Section Start **/
+  if(!(empty($node->field_link_section))) {
+    $link_section = array();
+    $field_link_sections = field_get_items('node', $node, 'field_link_section');
+    if (!empty($field_link_sections)) {
+      $field_link_section_items = array();
+      foreach ($field_link_sections as $field_link_section) {
+        $field_link_section_items[] = entity_revision_load('field_collection_item', $field_link_section['revision_id']); //load current revision of collection
+      }
+      foreach ($field_link_section_items as $item) {
+        $link_title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_link_title_1'));
+        $field_link_title_1 = (isset($link_title_1['value'])?$link_title_1['value']:'');
+
+        $link_title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_link_title_2'));
+        $field_link_title_2 = (isset($link_title_2['value'])?$link_title_2['value']:'');
+
+        $field_links = field_get_items('field_collection_item', $item, 'field_links');
+      }
+      $link_section['field_link_title_1'] = $field_link_title_1;
+      $link_section['field_link_title_2'] = $field_link_title_2;
+      $field_links_count = count($field_links);
+      if ($field_links_count > 0) {
+        for($take_action = 0; $take_action < $field_links_count; $take_action++) {
+          if ($field_links[$take_action]['url'] != '') {
+            if (substr($field_links[$take_action]['url'], 0, 4) != 'http' && substr($field_links[$take_action]['url'], 0, 1) != '/') {
+              //$field_links[$take_action]['url'] = '/'.$field_links[$take_action]['url'];
+            }      
+            $related_links = '<a href="'.$field_links[$take_action]['url'].'" class="cta uppercase" target="_blank">'.$field_links[$take_action]['title'].'</a>';
+            $link_section['related_links'][$take_action]['links'] = $related_links;
+          }
+        }
+      }
+      $variables['link_section'] = $link_section;
+    }
+  }
+  /** Related Link Section Start **/
+  
   /** Related Videos Section Start **/
-  $related_videos_left = $related_videos_right = array(); 
   if(!(empty($node->field_related_videos_section))) {
+    $related_videos = array(); 
     $field_related_videos_sections = field_get_items('node', $node, 'field_related_videos_section');
     if (!empty($field_related_videos_sections)) {
       $field_related_videos_section_items = array();
       foreach ($field_related_videos_sections as $field_related_videos_section) {
         $field_related_videos_section_items[] = entity_revision_load('field_collection_item', $field_related_videos_section['revision_id']); //load current revision of collection
       }
+      $index = 0;
       foreach ($field_related_videos_section_items as $item) {
         $related_videos_title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_title_1'));
         $field_related_videos_title_1 = (isset($related_videos_title_1['value'])?$related_videos_title_1['value']:'');
@@ -182,28 +343,11 @@ function characterunite_preprocess_node(&$variables, $hook) {
           if ($field_related_videos_link_url != '') {
             $related_videos_link_tag = '<p>'.l($field_related_videos_link_label, $field_related_videos_link_url, array('attributes' => array('target' => $field_related_videos_link_target, 'class' => 'uppercase'))).'</p>';
           }
-          if (strtolower($field_related_videos_position) != 'right') {
-            $related_videos_left .= '
-            <div class="mod full clearfix mod top-space">
-              <div class="mainstageHeader">
-                <h2 class="blackhead blackheadsmall">'.$field_related_videos_title_1.' <strong>'.$field_related_videos_title_2.'</strong></h2>
-              </div>
-              <section class="copy clearfix">
-              '.$field_related_videos_description.'
-              '.$related_videos_link_tag;
-          }
-          else {
-            $related_videos_right .= '
-              <div class="mod">
-                <div class="mainstageHeader">
-                  <h2 class="blackhead blackheadsmall">'.$field_related_videos_title_1.' <strong>'.$field_related_videos_title_2.'</strong></h2>
-                </div>
-                <div class="initiativeRightBody copy">
-                  '.$field_related_videos_description.'
-                  '.$related_videos_link_tag.'
-                  <div class="mainstageVideos clearfix">
-            ';
-          }
+
+          $related_videos[$index]['field_related_videos_title_1'] = $field_related_videos_title_1;
+          $related_videos[$index]['field_related_videos_title_2'] = $field_related_videos_title_2;
+          $related_videos[$index]['field_related_videos_description'] = $field_related_videos_description;
+          $related_videos[$index]['related_videos_link_tag'] = $related_videos_link_tag;
         
           $field_related_videos_iterations = field_get_items('field_collection_item', $item, 'field_related_videos_iteration');
           if (!empty($field_related_videos_iterations)) {
@@ -211,7 +355,7 @@ function characterunite_preprocess_node(&$variables, $hook) {
             foreach ($field_related_videos_iterations as $field_related_videos_iteration) {
               $field_related_videos_iteration_items[] = entity_revision_load('field_collection_item', $field_related_videos_iteration['revision_id']); //load current revision of collection
             }
-            $a = 0;
+            $iteration = 0;
             foreach ($field_related_videos_iteration_items as $iteration_item) {
               $rvi_video_title = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_title'));
               $field_rvi_video_title = (isset($rvi_video_title['value'])?$rvi_video_title['value']:'');  
@@ -228,57 +372,117 @@ function characterunite_preprocess_node(&$variables, $hook) {
               $field_rvi_video_link_target = (isset($rvi_video_link['attributes']['target'])?$rvi_video_link['attributes']['target']:'_self');
 
               if (substr($field_rvi_video_link_url, 0, 4) != 'http' && substr($field_rvi_video_link_url, 0, 1) != '/') {
-                $field_rvi_video_link_url = '/'.$field_rvi_video_link_url;
+                //$field_rvi_video_link_url = '/'.$field_rvi_video_link_url;
               }
-              $class = ((($a+1)%2 == 0)?'even':'odd');
-              if (strtolower($field_related_videos_position) != 'right') {
-                $related_videos_left .='
-                   <div class="relatedVideos clearfix">
-                  <a href="'.$field_rvi_video_link_url.'" class="relatedVideosImage" target="'.$field_rvi_video_link_target.'">
-                    <img alt="'.$field_rvi_video_title.'" src="'.file_create_url($field_rvi_video_thumbnail).'">
-                    <div class="playButton25"></div>
-                  </a>
-                  <div class="relatedVideosText">
-                    <h2>'.substr($field_rvi_video_title,0, 45).'</h2>
-                    <p>'.$field_rvi_video_info.'</p>
-                    '.l($field_rvi_video_link_label, $field_rvi_video_link_url, array('attributes' => array('target' => $field_rvi_video_link_target))).'
-                  </div>
-                  </div>
-                ';
-              }
-              else {
-                $related_videos_right .='
-                   <div class="relatedVideos clearfix '.$class.'">
-                  <a href="'.$field_rvi_video_link_url.'" class="relatedVideosImage" target="'.$field_rvi_video_link_target.'">
-                    <img alt="'.$field_rvi_video_title.'" src="'.file_create_url($field_rvi_video_thumbnail).'">
-                    <div class="playButton25"></div>
-                  </a>
-                  <div class="relatedVideosText">
-                    <h2>'.substr($field_rvi_video_title,0, 45).'</h2>
-                    <p>'.$field_rvi_video_info.'</p>
-                    '.l($field_rvi_video_link_label, $field_rvi_video_link_url, array('attributes' => array('target' => $field_rvi_video_link_target))).'
-                  </div>
-                  </div>
-                ';
-              }
-              $a++;
+
+              $related_videos[$index]['related_videos_iteration'][$iteration]['field_rvi_video_title'] = $field_rvi_video_title;
+              $related_videos[$index]['related_videos_iteration'][$iteration]['field_rvi_video_info'] = $field_rvi_video_info;
+              $related_videos[$index]['related_videos_iteration'][$iteration]['field_rvi_video_thumbnail'] = $field_rvi_video_thumbnail;
+              $related_videos[$index]['related_videos_iteration'][$iteration]['field_rvi_video_link_url'] = $field_rvi_video_link_url;
+              $related_videos[$index]['related_videos_iteration'][$iteration]['field_rvi_video_link_label'] = $field_rvi_video_link_label;
+              $related_videos[$index]['related_videos_iteration'][$iteration]['field_rvi_video_link_target'] = $field_rvi_video_link_target;
+              $iteration++;
             }
           }
           if (strtolower($field_related_videos_position) != 'right') {
-            $related_videos_left .= '
-              </section>
-            </div>';
+            $related_videos_left = $related_videos;
           }
           else {
-            $related_videos_right .= '</div>
-                </div>
-              </div>';
+            $related_videos_right = $related_videos;
           }
         }
+        $index++;
       }
+      if (isset($related_videos_left))
+        $variables['related_videos_left'] = $related_videos_left;
+      if (isset($related_videos_right))
+        $variables['related_videos_right'] = $related_videos_right;
     }
   }
   /** Related Videos Section End **/
+  
+
+  /** Related Images Section Start **/
+  if(!(empty($node->field_related_image_section))) {
+    $related_images = array();
+    $field_related_image_sections = field_get_items('node', $node, 'field_related_image_section');
+    if (!empty($field_related_image_sections)) {
+      $field_related_image_section_items = array();
+      foreach ($field_related_image_sections as $field_related_image_section) {
+        $field_related_image_section_items[] = entity_revision_load('field_collection_item', $field_related_image_section['revision_id']); //load current revision of collection
+      }
+      $index = 0;
+      foreach ($field_related_image_section_items as $item) {
+      
+        $related_image_title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_image_title_1'));
+        $field_related_image_title_1 = (isset($related_image_title_1['value'])?$related_image_title_1['value']:'');
+
+        $related_image_title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_image_title_2'));
+        $field_related_image_title_2 = (isset($related_image_title_2['value'])?$related_image_title_2['value']:'');
+
+        $related_image_description = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_image_description'));
+        $field_related_image_description = (isset($related_image_description['value'])?$related_image_description['value']:'');
+
+        $related_image_link = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_image_link'));
+        $field_related_image_link_url = (isset($related_image_link['url'])?($related_image_link['url']):'');
+        $field_related_image_link_label = (isset($related_image_link['title'])?$related_image_link['title']:'');
+        $field_related_image_link_target = (isset($related_image_link['attributes']['target'])?($related_image_link['attributes']['target']):'');
+
+        $related_image_position = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_image_position'));
+        $field_related_image_position = (isset($related_image_position['tid'])?taxonomy_term_load($related_image_position['tid'])->name:'');
+            
+        if ($field_related_image_title_1 != '' || $field_related_image_title_2 != '') {
+          $related_image_link_tag = '';
+          if ($field_related_image_link_url != '') {
+            $related_image_link_tag = '<p>'.l($field_related_image_link_label, $field_related_image_link_url, array('attributes' => array('target' => $field_related_image_link_target, 'class' => 'cta uppercase'))).'</p>';
+          }
+          
+          $related_images[$index]['field_related_image_title_1'] = $field_related_image_title_1;
+          $related_images[$index]['field_related_image_title_2'] = $field_related_image_title_2;
+          $related_images[$index]['field_related_image_description'] = $field_related_image_description;
+          $related_images[$index]['related_image_link_tag'] = $related_image_link_tag;
+        
+          $field_related_image_iterations = field_get_items('field_collection_item', $item, 'field_related_image_iteration');
+          if (!empty($field_related_image_iterations)) {
+            $field_related_image_iteration_items = array();
+            foreach ($field_related_image_iterations as $field_related_image_iteration) {
+              $field_related_image_iteration_items[] = entity_revision_load('field_collection_item', $field_related_image_iteration['revision_id']); //load current revision of collection
+            }
+            $iteration = 0;
+            foreach ($field_related_image_iteration_items as $iteration_item) {
+              $rii_image = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rii_image'));
+              $field_rii_image = (isset($rii_image['uri'])?$rii_image['uri']:'');  
+
+              $rii_image_link = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rii_image_link'));
+              $field_rii_image_link_url = (isset($rii_image_link['url'])?$rii_image_link['url']:'');  
+              $field_rii_image_link_label = (isset($rii_image_link['title'])?$rii_image_link['title']:'');  
+              $field_rii_image_link_target = (isset($rii_image_link['attributes']['target'])?$rii_image_link['attributes']['target']:'_self');
+              if (substr($field_rii_image_link_url, 0, 4) != 'http' && substr($field_rii_image_link_url, 0, 1) != '/') {
+                $field_rii_image_link_url = '/'.$field_rii_image_link_url;
+              }
+              $related_images[$index]['related_images_iteration'][$iteration]['field_rii_image'] = $field_rii_image;
+              $related_images[$index]['related_images_iteration'][$iteration]['field_rii_image_link_url'] = $field_rii_image_link_url;
+              $related_images[$index]['related_images_iteration'][$iteration]['field_rii_image_link_label'] = $field_rii_image_link_label;
+              $related_images[$index]['related_images_iteration'][$iteration]['field_rii_image_link_target'] = $field_rii_image_link_target;
+              $iteration++;
+            }
+          }
+          if (strtolower($field_related_image_position) != 'right') {
+            $related_images_left = $related_images;
+          }
+          else {
+            $related_images_right = $related_images;
+          }
+        }
+        $index++;
+      }
+      if (isset($related_images_left))
+        $variables['related_images_left'] = $related_images_left;
+      if (isset($related_images_right))
+        $variables['related_images_right'] = $related_images_right;      
+    }
+  }
+  /** Related Images Section End **/
 }
 
 /**
