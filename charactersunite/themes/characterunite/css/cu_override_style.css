@@ -793,3 +793,20 @@ div.share li {
   color: #222;
 }
 /**** HUB End ***/
+
+/*** Space between issues start ***/
+.spaceBetweenIssues {
+
+}
+.sbiGalleryView {
+
+}
+.sbiGalleryViewRow .colMain {
+width: 688px;
+margin-left: 3px;
+margin-right: 11px;
+}
+.sbiGalleryViewRow .colSide {
+width: 248px;
+}
+/*** Space between issues end ***/

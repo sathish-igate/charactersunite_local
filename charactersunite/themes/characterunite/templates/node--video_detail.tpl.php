@@ -77,7 +77,7 @@
  * @see template_preprocess_node()
  * @see template_process()
  */
-
+print_r($sathish);
 ?>
 
 <?php
@@ -94,7 +94,7 @@
 
   $field_video_description = (isset($field_video_section['field_video_description'])?$field_video_section['field_video_description']['#items'][0]['value']:'');
 
-  /** Black Box Section **/
+  /** Black Box Section *
   $field_black_box_section_value = $content['field_black_box_section']['#items'][0]['value'];
   $field_black_box_section = $content['field_black_box_section'][0]['entity']['field_collection_item'][$field_black_box_section_value];
 
@@ -109,7 +109,7 @@
   $field_black_box_more_link = (isset($field_black_box_section['field_black_box_more_link'])?$field_black_box_section['field_black_box_more_link']['#items'][0]['value']:'');
 
   $field_add_spread_the_word_block = (isset($field_black_box_section['field_add_spread_the_word_block'])?$field_black_box_section['field_add_spread_the_word_block']['#items'][0]['value']:'');
-  
+  */
 ?>
 	<div class="showcaseMain layoutWide">
 		<div id="colMain">
@@ -132,24 +132,25 @@
 		</div>
 		<!-- initiativesLeft end -->
 		<div id="colSide">
-			<?php if ($field_black_box_title != '' || $field_black_box_title_2 != '' || $field_black_box_description != '') { ?>
-			<div class="mod solid">
-				<h2 class="title"><?php echo $field_black_box_title; ?> <br/><small><?php echo $field_black_box_title_2; ?></small></h2>
-				<?php
-				if ($field_black_box_more_link != 0) {
-					echo '<span class="blackpane_desc" style="height:250px">'.$field_black_box_description.'</span><a class="blackpane_desc_more amore" href="javascript:;" onclick="LeftDesc(\'blackpane_desc\', \'less\', 250, \'\');">More</a><a class="blackpane_desc_less amore" href="javascript:;" onclick="LeftDesc(\'blackpane_desc\', \'more\', 250, \'\');">Less</a>';
-				}
-				else {
-					echo '<p>'.$field_black_box_description.'</p>';
-				}
-				?>
-				<?php if ($region['spread_the_word']): ?>
-          <aside class="share">
-					<?php print render($region['spread_the_word']); ?>
-          </aside>
-				<?php endif; ?>
-			</div>
-			<?php } ?>
+			<?php if ($field_black_box_title != '' || $field_black_box_title_2 != '' || $field_black_box_description != ''): ?>
+        <div class="mod solid">
+          <h2 class="title"><?php echo $field_black_box_title; ?> <br/><small><?php echo $field_black_box_title_2; ?></small></h2>
+          <?php if ($field_black_box_more_link != 0): ?>
+            <span class="blackpane_desc" style="height:250px">
+              <?php echo $field_black_box_description; ?>
+            </span>
+            <a class="blackpane_desc_more amore" href="javascript:;" onclick="LeftDesc(\'blackpane_desc\', \'less\', 250, \'\');">More</a>
+            <a class="blackpane_desc_less amore" href="javascript:;" onclick="LeftDesc(\'blackpane_desc\', \'more\', 250, \'\');">Less</a>';
+          <?php else: ?>
+            <?php echo $field_black_box_description; ?>
+          <?php endif; ?>
+          <?php if ($region['spread_the_word']): ?>
+            <aside class="share">
+            <?php print render($region['spread_the_word']); ?>
+            </aside>
+          <?php endif; ?>
+        </div>
+			<?php endif; ?>
 		</div>
 		<!-- initiativesRight end -->
 	</div>
