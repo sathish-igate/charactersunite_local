@@ -132,13 +132,13 @@ article.newsItem {
 	font-size:14px;
 }
 .issueVideo a {
-	background: url('../img/usa_play53Wx53H.png') no-repeat scroll 3% 94% transparent;
+	/*background: url('../img/usa_play53Wx53H.png') no-repeat scroll 3% 94% transparent;
 	display: block;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
 	text-indent: -9000px;
-	text-align: left;	
+	text-align: left;	*/
 }
 .issues-views {
 	padding-bottom: 8px !important;
@@ -626,12 +626,12 @@ div.share li {
 
 /*** Announcements ***/
 
-#announcements_list {
+.announcements-list {
   width: 100%;
   margin-left: 3px;
   margin-right: 11px;
 }
-#announcements_list article {
+.announcements-list div {
   width: 100%;
   display: block;
   height: auto;
@@ -639,7 +639,7 @@ div.share li {
   padding: 1.5em 0;
   border-bottom: 1px solid #cccccc;
 }
-#announcements_list article .date-display-single {
+.announcements-list div .date-display-single {
   font-weight: normal;
   display: block;
   margin: 1em 0 0;
@@ -752,4 +752,44 @@ div.share li {
   margin-right: 11px;
   padding-top: 15px;
 }
+.internal-landing-left .half-module .views-row-odd .mod.half{
+  clear: left;
+  margin-left: 0;
+}
+.internal-landing-left .half-module .mod.half {
+  float: left;
+  clear: none;
+  margin: 0 0 1.333em 12px;
+  width: 336px;
+  border: 1px solid #dadada;
+  background-color: #f4f4f4;
+  margin-bottom: 17px;
+}
 /*** Internal Landing Page End ***/
+
+/**** HUB Start ***/
+.hub-page .hub-page-row{
+  float: left;
+  width: 475px;
+  height: 150px;
+  padding: 22px 0px 0px 0px;
+  border-bottom: 1px solid #c3c3c3;
+}
+.hub-page .hub-page-row em {
+  margin-right: 22px;
+}
+.hub-page .hub-page-row h2 {
+  /*width: 212px;*/
+  text-transform: uppercase;
+  font-size: 22px;
+  line-height: 22px;
+  margin:0px;
+  margin-bottom: .5em;
+}
+.hub-page .hub-page-row a {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #222;
+}
+/**** HUB End ***/

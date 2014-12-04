@@ -429,12 +429,11 @@
 
       $ds_position = characterunite_reset(field_get_items('field_collection_item', $item, 'field_ds_position'));
       $field_ds_position = (isset($ds_position['tid'])?taxonomy_term_load($ds_position['tid'])->name:'');
-      if (substr($field_half_module_link_url, 0, 4) != 'http' && substr($field_half_module_link_url, 0, 1) != '/') {
+      if (substr($field_half_module_link_url, 0, 4) != 'http' && substr($field_half_module_link_url, 0, 1) != '/' && $field_half_module_link_url != '') {
         $field_half_module_link_url = '/'.$field_half_module_link_url;
       }
       $half_module_link_tag = '';
       if ($field_half_module_link_url != '') {
-        //$half_module_link_tag = '<p>'.l($field_half_module_link_label, $field_half_module_link_url, array('attributes' => array('target' => $field_half_module_link_target, 'class' => 'uppercase')));
         $half_module_link_tag = '<p><a href="'.$field_half_module_link_url.'" target="'.$field_half_module_link_target.'" class="uppercase">'.$field_half_module_link_label.'</a>';
       }
       $class = (($half_module%2 == 0)?'clear':'');      
