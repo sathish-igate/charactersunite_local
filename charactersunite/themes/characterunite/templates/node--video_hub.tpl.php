@@ -77,77 +77,53 @@
  * @see template_preprocess_node()
  * @see template_process()
  */
-//print_r($content);
-?>
-
-<?php
-$video_hub_description = characterunite_reset(field_get_items('node', $node, 'field_video_hub_description'));
-$field_video_hub_description = (isset($video_hub_description['value'])?$video_hub_description['value']:'');
-
-if (!empty($field_video_hub_description)) {
-  if ($field_video_hub_description == strip_tags($field_video_hub_description)) {
-    $field_video_hub_description = '<p>'.$field_video_hub_description.'</p>';
-  }
-  $field_video_hub_description = '<div class="mod-overview">'.$field_video_hub_description.'</div>';
-}
-  $video_hub_html = '';
-  $field_video_hub_sections = field_get_items('node', $node, 'field_video_hub_section');
-  if (!empty($field_video_hub_sections)) {
-    $field_video_hub_sections_items = array();
-    foreach ($field_video_hub_sections as $field_video_hub_section) {
-      $field_video_hub_sections_items[] = entity_revision_load('field_collection_item', $field_video_hub_section['revision_id']); //load current revision of collection
-    }
-    foreach ($field_video_hub_sections_items as $item) {
-      $hub_category = characterunite_reset(field_get_items('field_collection_item', $item, 'field_video_hub_category'));
-      $field_video_hub_category = (isset($hub_category['value'])?$hub_category['value']:'');
-      
-      $video_hub_html .= '<div class="showcase">';
-      if ($field_video_hub_category != '') {
-        $video_hub_html .= '<h2 class="uppercase">'.$field_video_hub_category.'</h2>';
-      }
-      
-      $field_video_hub_iterations = field_get_items('field_collection_item', $item, 'field_video_hub_iteration');
-      if (!empty($field_video_hub_iterations)) {
-        $field_video_hub_iterations_items = array();
-        foreach ($field_video_hub_iterations as $field_video_hub_iteration) {
-          $field_video_hub_iterations_items[] = entity_revision_load('field_collection_item', $field_video_hub_iteration['revision_id']); //load current revision of collection
-        }
-        foreach ($field_video_hub_iterations_items as $iteration_item) {
-          $vhi_name = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_vhi_name'));
-          $field_vhi_name = (isset($vhi_name['value'])?$vhi_name['value']:'');  
-
-          $vhi_thumbnail = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_vhi_thumbnail'));
-          $field_vhi_thumbnail = (isset($vhi_thumbnail['uri'])?'<img src="'.file_create_url($vhi_thumbnail['uri']).'" class="videoThumb" alt="'.$field_vhi_name.'"/>':'');
-
-          $field_vhi = '';
-          $field_vhi_info = field_get_items('field_collection_item', $iteration_item, 'field_vhi_info');
-          if (isset($field_vhi_info)) {
-            $field_vhi_info_count = count($field_vhi_info);
-            for ($vhi_info = 0; $vhi_info < $field_vhi_info_count; $vhi_info++) {
-              $field_vhi .= '<br/>'.$field_vhi_info[$vhi_info]['value'];
-            }
-          }
-
-          $vhi_link = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_vhi_link'));
-          $field_vhi_link_url = (isset($vhi_link['url'])?$vhi_link['url']:'');  
-          $field_vhi_link_label = (isset($vhi_link['title'])?$vhi_link['title']:'');  
-          $field_vhi_link_target = (isset($vhi_link['attributes']['target'])?$vhi_link['attributes']['target']:'_self');
-          $img_wrap_start = $img_wrap_end = $field_vhi_link = '';
-          if (!empty($field_vhi_link_url)) {
-            $field_vhi_link = l($field_vhi_link_label, $field_vhi_link_url, array('attributes' => array('target' => $field_vhi_link_target, 'class' => 'cta')));
-            $img_wrap_start = '<a class="showcaseVideoImage" href="'.$field_vhi_link_url.'" target="'.$field_vhi_link_target.'">';
-            $img_wrap_end = '<div class="playButton53"></div></a>';          
-          }
-          $video_hub_html .= '<div class="showcaseVideo">'.$img_wrap_start.$field_vhi_thumbnail.$img_wrap_end.'<div class="showcaseVideoText"><section><strong>'.$field_vhi_name.'</strong>'.$field_vhi.'</section>'.$field_vhi_link.'</div></div>';          
-        }
-      }
-      $video_hub_html .= '</div>';
-    }
-  }
 
 ?>
+
 	<div class="showcaseMain">
-		<?php echo (($field_video_hub_description != '')?$field_video_hub_description:''); ?>
-		<?php echo $video_hub_html; ?>
+		<?php if (isset($field_video_hub_description) && !empty($field_video_hub_description)):?>
+      <?php if(strip_tags($field_video_hub_description) == $field_video_hub_description ): ?>
+        <p><?php print $field_video_hub_description; ?></p>
+      <?php else: ?>
+        <?php print $field_video_hub_description; ?>
+      <?php endif; ?>
+    <?php endif; ?>
+		<?php if (isset($video_hub) && count($video_hub) > 0):?>
+      <?php foreach ($video_hub as $id => $mainlist): ?>
+        <div class="showcase">
+          <?php if ($mainlist['field_video_hub_category'] != ''): ?>
+            <h2 class="uppercase">
+              <?php print $mainlist['field_video_hub_category']; ?>
+            </h2>
+          <?php endif; ?>
+          <?php foreach ($mainlist as $subid => $sublist): ?>
+            <?php if (is_numeric($subid)): ?>
+              <?php if ($sublist['field_vhi_thumbnail'] != ''): ?>
+                <?php $field_vhi_link = l($sublist['field_vhi_link_label'], $sublist['field_vhi_link_url'], array('attributes' => array('target' => $sublist['field_vhi_link_target'], 'class' => 'cta'))); ?>
+                <div class="showcaseVideo">
+                  <?php if (!empty($sublist['field_vhi_link_url'])): ?>
+                    <a class="showcaseVideoImage" href="<?php print $sublist['field_vhi_link_url']; ?>" target="<?php print $sublist['field_vhi_link_target']; ?>">
+                  <?php endif; ?>
+                    <img src="<?php print file_create_url($sublist['field_vhi_thumbnail']); ?>" class="videoThumb" alt="<?php print $sublist['field_vhi_name']; ?>"/>
+                  <?php if (!empty($sublist['field_vhi_link_url'])): ?>
+                    <div class="playButton53"></div>
+                  </a>
+                  <?php endif; ?>
+                  <div class="showcaseVideoText">
+                    <section>
+                      <strong>
+                        <?php print $sublist['field_vhi_name']; ?>
+                      </strong>
+                      <?php print $sublist['field_vhi_info']; ?>
+                    </section>
+                    <?php print $field_vhi_link; ?>
+                  </div>
+                </div>
+              <?php endif; ?>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
 	</div>
 	<!-- showcaseMain end -->

@@ -483,6 +483,180 @@ function characterunite_preprocess_node(&$variables, $hook) {
     }
   }
   /** Related Images Section End **/
+  
+
+  /** Image Landing Section Start **/
+  if(!(empty($node->field_ilp_image))) {
+    $ilp_image = characterunite_reset(field_get_items('node', $node, 'field_ilp_image'));
+    $variables['field_ilp_image'] = (isset($ilp_image['uri'])?$ilp_image['uri']:'');
+    $ilp_image_title = characterunite_reset(field_get_items('node', $node, 'field_ilp_image_title'));
+    $variables['field_ilp_image_title'] = (isset($ilp_image_title['value'])?$ilp_image_title['value']:'');
+    $ilp_image_description = characterunite_reset(field_get_items('node', $node, 'field_ilp_image_description'));
+    $variables['field_ilp_image_description'] = (isset($ilp_image_description['value'])?$ilp_image_description['value']:'');
+  }
+    /** Gallery in Image landing page **/
+    if(!(empty($node->field_ilp_photo_gallery_images))) {
+      $field_ilp_photo_gallery_images = field_get_items('node', $node, 'field_ilp_photo_gallery_images');
+      if (!empty($field_ilp_photo_gallery_images)) {
+        $ilp_photo_gallery_title = characterunite_reset(field_get_items('node', $node, 'field_ilp_photo_gallery_title'));
+        $variables['field_ilp_photo_gallery_title'] = (isset($ilp_photo_gallery_title['value'])?$ilp_photo_gallery_title['value']:'');
+
+        $ilp_photo_gallery_link = characterunite_reset(field_get_items('node', $node, 'field_ilp_photo_gallery_link'));
+        $variables['field_ilp_photo_gallery_link'] = (isset($ilp_photo_gallery_link['url'])?$ilp_photo_gallery_link['url']:'');
+        $variables['field_ilp_photo_gallery_label'] = (isset($ilp_photo_gallery_link['title'])?$ilp_photo_gallery_link['title']:'');
+        if (isset($field_ilp_photo_gallery_images)) {
+          $field_ilp_photo_gallery_images_count = count($field_ilp_photo_gallery_images);
+          for ($ilp_photo_gallery = 0; $ilp_photo_gallery<$field_ilp_photo_gallery_images_count; $ilp_photo_gallery++) {
+            $variables['photo_gallery_images'][$ilp_photo_gallery]['ilp_photo_gallery'] = $field_ilp_photo_gallery_images[$ilp_photo_gallery]['uri'];
+          }
+        }
+      }
+    }
+  /** Image Landing Section End **/
+  
+  /** ISSUES Variables Start ***/
+  $issues_banner = characterunite_reset(field_get_items('node', $node, 'field_issues_banner'));
+  $variables['field_issues_banner'] = (isset($issues_banner['uri'])?$issues_banner['uri']:'');
+
+  $issues_banner_link = characterunite_reset(field_get_items('node', $node, 'field_issues_banner_link'));
+  $variables['field_issues_banner_link'] = (isset($issues_banner_link['url'])?$issues_banner_link['url']:'');
+  $variables['field_issues_banner_target'] = (isset($issues_banner_link['attributes']['target'])?$issues_banner_link['attributes']['target']:'');
+
+  $take_action_title_1 = characterunite_reset(field_get_items('node', $node, 'field_issues_take_action_title_1'));
+  $variables['field_issues_take_action_title_1'] = (isset($take_action_title_1['value'])?$take_action_title_1['value']:'');
+
+  $take_action_title_2 = characterunite_reset(field_get_items('node', $node, 'field_issues_take_action_title_2'));
+  $variables['field_issues_take_action_title_2'] = (isset($take_action_title_2['value'])?$take_action_title_2['value']:'');
+
+  $variables['field_issues_take_action_list'] = field_get_items('node', $node, 'field_issues_take_action_list');
+  
+  $facts_title_1 = characterunite_reset(field_get_items('node', $node, 'field_issues_facts_title_1'));
+  $variables['field_issues_facts_title_1'] = (isset($facts_title_1['value'])?$facts_title_1['value']:'');
+
+  $facts_title_2 = characterunite_reset(field_get_items('node', $node, 'field_issues_facts_title_2'));
+  $variables['field_issues_facts_title_2'] = (isset($facts_title_2['value'])?$facts_title_2['value']:'');
+
+  $variables['field_issues_facts_list'] = (field_get_items('node', $node, 'field_issues_facts_list'));  
+  /** ISSUES Variables End ***/
+
+  /** Biography List Start **/
+  if(!(empty($node->field_biography_list_section))) {
+    $bio_list = array();
+    $field_biography_list_sections = field_get_items('node', $node, 'field_biography_list_section');
+    if (!empty($field_biography_list_sections)) {
+      $field_biography_list_section_items = array();
+      foreach ($field_biography_list_sections as $field_video_section) {
+        $field_biography_list_section_items[] = entity_revision_load('field_collection_item', $field_video_section['revision_id']); //load current revision of collection
+      }
+      $index = 0;      
+      foreach ($field_biography_list_section_items as $item) {
+        $field_bl_sections = field_get_items('field_collection_item', $item, 'field_bl_section');
+        if (!empty($field_bl_sections)) {
+          $field_bl_section_items = array();
+          foreach ($field_bl_sections as $field_bl_section) {
+            $field_bl_section_items[] = entity_revision_load('field_collection_item', $field_bl_section['revision_id']); //load current revision of collection
+          }
+          $bl_section = 0;
+          $bl_category_title = characterunite_reset(field_get_items('field_collection_item', $item, 'field_bl_category_title'));
+          $bio_list[$index]['field_bl_category_title'] = (isset($bl_category_title['value'])?($bl_category_title['value']):'');          
+          foreach ($field_bl_section_items as $iteration_item) {
+            $bl_section_title = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_bl_section_title'));
+            $bio_list[$index][$bl_section]['field_bl_section_title'] = (isset($bl_section_title['value'])?$bl_section_title['value']:'');  
+
+            $bl_section_title_2 = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_bl_section_title_2'));
+            $bio_list[$index][$bl_section]['field_bl_section_title_2'] = (isset($bl_section_title_2['value'])?$bl_section_title_2['value']:'');  
+
+            $bl_section_info = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_field_bl_section_info'));
+            $bio_list[$index][$bl_section]['field_field_bl_section_info'] = (isset($bl_section_info['value'])?$bl_section_info['value']:'');  
+
+            $bl_section_description = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_bl_section_description'));
+            $bio_list[$index][$bl_section]['field_bl_section_description'] = (isset($bl_section_description['value'])?$bl_section_description['value']:'');  
+
+            $bl_section_thumbnail = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_bl_section_thumbnail'));
+            $bio_list[$index][$bl_section]['field_bl_section_thumbnail'] = (isset($bl_section_thumbnail['uri'])?($bl_section_thumbnail['uri']):'');
+
+            $bl_section_link = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_bl_section_link'));
+            $bio_list[$index][$bl_section]['field_bl_section_link_url'] = (isset($bl_section_link['url'])?($bl_section_link['url']):'');  
+            $bio_list[$index][$bl_section]['field_bl_section_link_title'] = (isset($bl_section_link['title'])?($bl_section_link['title']):'');  
+            $bio_list[$index][$bl_section]['field_bl_section_link_target'] = (isset($bl_section_link['attributes']['target'])?($bl_section_link['attributes']['target']):'_self');
+
+            $bl_section++;
+          }
+          $index++;
+        }     
+      }
+      if (isset($bio_list))
+        $variables['biography_list'] = $bio_list;      
+    }
+  }
+  /** Biography List End **/
+
+  /** Video HUB Start **/
+  if(!empty($node->field_video_hub_description) || !empty($node->field_video_hub_section)) {
+    $video_hub_description = characterunite_reset(field_get_items('node', $node, 'field_video_hub_description'));
+    $field_video_hub_description = (isset($video_hub_description['value'])?$video_hub_description['value']:'');
+
+    if ($field_video_hub_description != '') {
+      $variables['field_video_hub_description'] = $field_video_hub_description;
+    }
+    $video_hub = array();
+    $field_video_hub_sections = field_get_items('node', $node, 'field_video_hub_section');
+
+    if (!empty($field_video_hub_sections)) {
+      $field_video_hub_sections_items = array();
+      foreach ($field_video_hub_sections as $field_video_hub_section) {
+        $field_video_hub_sections_items[] = entity_revision_load('field_collection_item', $field_video_hub_section['revision_id']); //load current revision of collection
+      }
+      $index = 0;
+      foreach ($field_video_hub_sections_items as $item) {
+        $hub_category = characterunite_reset(field_get_items('field_collection_item', $item, 'field_video_hub_category'));
+        $field_video_hub_category = (isset($hub_category['value'])?$hub_category['value']:'');
+        
+        if ($field_video_hub_category != '') {
+          $video_hub[$index]['field_video_hub_category'] = $field_video_hub_category;
+        }
+        
+        $field_video_hub_iterations = field_get_items('field_collection_item', $item, 'field_video_hub_iteration');
+        if (!empty($field_video_hub_iterations)) {
+          $field_video_hub_iterations_items = array();
+          foreach ($field_video_hub_iterations as $field_video_hub_iteration) {
+            $field_video_hub_iterations_items[] = entity_revision_load('field_collection_item', $field_video_hub_iteration['revision_id']); //load current revision of collection
+          }
+          $iteration = 0;
+          foreach ($field_video_hub_iterations_items as $iteration_item) {
+            $vhi_name = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_vhi_name'));
+            $video_hub[$index][$iteration]['field_vhi_name'] = (isset($vhi_name['value'])?$vhi_name['value']:'');  
+
+            $vhi_thumbnail = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_vhi_thumbnail'));
+            $video_hub[$index][$iteration]['field_vhi_thumbnail'] = (isset($vhi_thumbnail['uri'])?$vhi_thumbnail['uri']:'');
+
+            $field_vhi = '';
+            $field_vhi_info = field_get_items('field_collection_item', $iteration_item, 'field_vhi_info');
+            if (isset($field_vhi_info)) {
+              $field_vhi_info_count = count($field_vhi_info);
+              for ($vhi_info = 0; $vhi_info < $field_vhi_info_count; $vhi_info++) {
+                $field_vhi .= '<br/>'.$field_vhi_info[$vhi_info]['value'];
+              }
+            }
+            $video_hub[$index][$iteration]['field_vhi_info'] = $field_vhi;
+
+            $vhi_link = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_vhi_link'));
+            if (count($vhi_link) != 0) {
+              $video_hub[$index][$iteration]['field_vhi_link_url'] = (isset($vhi_link['url'])?$vhi_link['url']:'');  
+              $video_hub[$index][$iteration]['field_vhi_link_label'] = (isset($vhi_link['title'])?$vhi_link['title']:'');  
+              $video_hub[$index][$iteration]['field_vhi_link_target'] = (isset($vhi_link['attributes']['target'])?$vhi_link['attributes']['target']:'_self');
+            }
+            $iteration++;
+          }
+        }
+        $index++;
+      }
+    }
+    if (isset($video_hub))
+      $variables['video_hub'] = $video_hub;    
+  }
+  /** Video HUB End **/
+  
 }
 
 /**

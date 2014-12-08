@@ -80,9 +80,9 @@
 
 ?>
 
-<?php
-
-	if ($node->field_page_redirect_url[LANGUAGE_NONE][0]['url'] != '') {
-		echo '<div class="quick_tab_redirect">'.$node->field_page_redirect_url[LANGUAGE_NONE][0]['url'].'</div>';
-	}
-?>
+<?php if ($node->field_page_redirect_url[LANGUAGE_NONE][0]['url'] != ''): ?>
+  <div class="quick_tab_redirect">
+    <?php $redirecturl = characterunite_reset(field_get_items('node', $node, 'field_page_redirect_url')); ?>
+    <?php print (isset($redirecturl['url'])?$redirecturl['url']:''); ?>
+  </div>
+<?php endif; ?>

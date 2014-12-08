@@ -80,423 +80,166 @@
 
 ?>
 
-<?php
-  /** Video Section **/
-  $field_video_sections = field_get_items('node', $node, 'field_video_section');
-  if (!empty($field_video_sections)) {
-    $field_video_section_items = array();
-    foreach ($field_video_sections as $field_video_section) {
-      $field_video_section_items[] = entity_revision_load('field_collection_item', $field_video_section['revision_id']); //load current revision of collection
-    }
-    foreach ($field_video_section_items as $item) {
-      $field_video = characterunite_reset(field_get_items('field_collection_item', $item, 'field_video_id'));
-      $field_video_id = (isset($field_video['value'])?$field_video['value']:'');
-
-      $transcript_title = characterunite_reset(field_get_items('field_collection_item', $item, 'field_transcript_title'));
-      $field_transcript_title = (isset($transcript_title['value'])?$transcript_title['value']:'');
-
-      $transcript_description = characterunite_reset(field_get_items('field_collection_item', $item, 'field_transcript_description'));
-      $field_transcript_description = (isset($transcript_description['value'])?$transcript_description['value']:'');
-
-      $transcript_more_link = characterunite_reset(field_get_items('field_collection_item', $item, 'field_transcript_more_link'));
-      $field_transcript_more_link = (isset($transcript_more_link['value'])?$transcript_more_link['value']:'');
-
-      $video_description = characterunite_reset(field_get_items('field_collection_item', $item, 'field_video_description'));
-      $field_video_description = (isset($video_description['value'])?$video_description['value']:'');
-    }
-  }
-
-  /** Related Videos Section **/
-  $related_videos_left = $related_videos_right = ''; 
-  $field_related_videos_sections = field_get_items('node', $node, 'field_related_videos_section');
-  if (!empty($field_related_videos_sections)) {
-    $field_related_videos_section_items = array();
-    foreach ($field_related_videos_sections as $field_related_videos_section) {
-      $field_related_videos_section_items[] = entity_revision_load('field_collection_item', $field_related_videos_section['revision_id']); //load current revision of collection
-    }
-    foreach ($field_related_videos_section_items as $item) {
-      $related_videos_title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_title_1'));
-      $field_related_videos_title_1 = (isset($related_videos_title_1['value'])?$related_videos_title_1['value']:'');
-
-      $related_videos_title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_title_2'));
-      $field_related_videos_title_2 = (isset($related_videos_title_2['value'])?$related_videos_title_2['value']:'');
-
-      $related_videos_description = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_description'));
-      $field_related_videos_description = (isset($related_videos_description['value'])?$related_videos_description['value']:'');
-
-      $related_videos_link = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_link'));
-      $field_related_videos_link_url = (isset($related_videos_link['url'])?($related_videos_link['url']):'');
-      $field_related_videos_link_label = (isset($related_videos_link['title'])?$related_videos_link['title']:'');
-      $field_related_videos_link_target = (isset($related_videos_link['attributes']['target'])?($related_videos_link['attributes']['target']):'');
-
-      $related_videos_position = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_position'));
-      $field_related_videos_position = (isset($related_videos_position['tid'])?taxonomy_term_load($related_videos_position['tid'])->name:'');
-
-      if ($field_related_videos_title_1 != '' || $field_related_videos_title_2 != '') {
-        $related_videos_link_tag = '';
-        if ($field_related_videos_link_url != '') {
-          $related_videos_link_tag = '<p>'.l($field_related_videos_link_label, $field_related_videos_link_url, array('attributes' => array('target' => $field_related_videos_link_target, 'class' => 'uppercase'))).'</p>';
-        }
-        if (strtolower($field_related_videos_position) != 'right') {
-          $related_videos_left .= '
-          <div class="mod full clearfix mod top-space">
-            <div class="mainstageHeader">
-              <h2 class="blackhead blackheadsmall">'.$field_related_videos_title_1.' <strong>'.$field_related_videos_title_2.'</strong></h2>
-            </div>
-            <section class="copy clearfix">
-            '.$field_related_videos_description.'
-            '.$related_videos_link_tag;
-        }
-        else {
-          $related_videos_right .= '
-            <div class="mod">
-              <div class="mainstageHeader">
-                <h2 class="blackhead blackheadsmall">'.$field_related_videos_title_1.' <strong>'.$field_related_videos_title_2.'</strong></h2>
-              </div>
-              <div class="initiativeRightBody copy">
-                '.$field_related_videos_description.'
-                '.$related_videos_link_tag.'
-                <div class="mainstageVideos clearfix">
-          ';
-        }
-      
-        $field_related_videos_iterations = field_get_items('field_collection_item', $item, 'field_related_videos_iteration');
-        if (!empty($field_related_videos_iterations)) {
-          $field_related_videos_iteration_items = array();
-          foreach ($field_related_videos_iterations as $field_related_videos_iteration) {
-            $field_related_videos_iteration_items[] = entity_revision_load('field_collection_item', $field_related_videos_iteration['revision_id']); //load current revision of collection
-          }
-          $a = 0;
-          foreach ($field_related_videos_iteration_items as $iteration_item) {
-            $rvi_video_title = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_title'));
-            $field_rvi_video_title = (isset($rvi_video_title['value'])?$rvi_video_title['value']:'');  
-
-            $rvi_video_info = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_info'));
-            $field_rvi_video_info = (isset($rvi_video_info['value'])?$rvi_video_info['value']:'');  
-
-            $rvi_video_thumbnail = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_thumbnail'));
-            $field_rvi_video_thumbnail = (isset($rvi_video_thumbnail['uri'])?$rvi_video_thumbnail['uri']:'');
-
-            $rvi_video_link = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_link'));
-            $field_rvi_video_link_url = (isset($rvi_video_link['url'])?$rvi_video_link['url']:'');  
-            $field_rvi_video_link_label = (isset($rvi_video_link['title'])?$rvi_video_link['title']:'');  
-            $field_rvi_video_link_target = (isset($rvi_video_link['attributes']['target'])?$rvi_video_link['attributes']['target']:'_self');
-
-
-            $class = ((($a+1)%2 == 0)?'even':'odd');
-            if (strtolower($field_related_videos_position) != 'right') {
-              $related_videos_left .='
-                 <div class="relatedVideos clearfix">
-                <a href="'.$field_rvi_video_link_url.'" class="relatedVideosImage" target="'.$field_rvi_video_link_target.'">
-                  <img alt="'.$field_rvi_video_title.'" src="'.file_create_url($field_rvi_video_thumbnail).'">
-                  <div class="playButton25"></div>
-                </a>
-                <div class="relatedVideosText">
-                  <h2>'.substr($field_rvi_video_title,0, 45).'</h2>
-                  <p>'.$field_rvi_video_info.'</p>
-                  '.l($field_rvi_video_link_label, $field_rvi_video_link_url, array('attributes' => array('target' => $field_rvi_video_link_target))).'
-                </div>
-                </div>
-              ';
-            }
-            else {
-              $related_videos_right .='
-                 <div class="relatedVideos clearfix '.$class.'">
-                <a href="'.$field_rvi_video_link_url.'" class="relatedVideosImage" target="'.$field_rvi_video_link_target.'">
-                  <img alt="'.$field_rvi_video_title.'" src="'.file_create_url($field_rvi_video_thumbnail).'">
-                  <div class="playButton25"></div>
-                </a>
-                <div class="relatedVideosText">
-                  <h2>'.substr($field_rvi_video_title,0, 45).'</h2>
-                  <p>'.$field_rvi_video_info.'</p>
-                  '.l($field_rvi_video_link_label, $field_rvi_video_link_url, array('attributes' => array('target' => $field_rvi_video_link_target))).'
-                </div>
-                </div>
-              ';
-            }
-            $a++;
-          }
-        }
-        if (strtolower($field_related_videos_position) != 'right') {
-          $related_videos_left .= '
-            </section>
-          </div>';
-        }
-        else {
-          $related_videos_right .= '</div>
-              </div>
-            </div>';
-        }
-      }
-    }
-  }
-
-  /** Related Videos Section **/
-  $related_videos_left = $related_videos_right = ''; 
-  $field_related_videos_sections = field_get_items('node', $node, 'field_related_videos_section');
-  if (!empty($field_related_videos_sections)) {
-    $field_related_videos_section_items = array();
-    foreach ($field_related_videos_sections as $field_related_videos_section) {
-      $field_related_videos_section_items[] = entity_revision_load('field_collection_item', $field_related_videos_section['revision_id']); //load current revision of collection
-    }
-    foreach ($field_related_videos_section_items as $item) {
-      $related_videos_title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_title_1'));
-      $field_related_videos_title_1 = (isset($related_videos_title_1['value'])?$related_videos_title_1['value']:'');
-
-      $related_videos_title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_title_2'));
-      $field_related_videos_title_2 = (isset($related_videos_title_2['value'])?$related_videos_title_2['value']:'');
-
-      $related_videos_description = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_description'));
-      $field_related_videos_description = (isset($related_videos_description['value'])?$related_videos_description['value']:'');
-
-      $related_videos_link = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_link'));
-      $field_related_videos_link_url = (isset($related_videos_link['url'])?($related_videos_link['url']):'');
-      $field_related_videos_link_label = (isset($related_videos_link['title'])?$related_videos_link['title']:'');
-      $field_related_videos_link_target = (isset($related_videos_link['attributes']['target'])?($related_videos_link['attributes']['target']):'');
-
-      $related_videos_position = characterunite_reset(field_get_items('field_collection_item', $item, 'field_related_videos_position'));
-      $field_related_videos_position = (isset($related_videos_position['tid'])?taxonomy_term_load($related_videos_position['tid'])->name:'');
-
-      if ($field_related_videos_title_1 != '' || $field_related_videos_title_2 != '') {
-        $related_videos_link_tag = '';
-        if ($field_related_videos_link_url != '') {
-          $related_videos_link_tag = '<p>'.l($field_related_videos_link_label, $field_related_videos_link_url, array('attributes' => array('target' => $field_related_videos_link_target, 'class' => 'uppercase'))).'</p>';
-        }
-        if (strtolower($field_related_videos_position) != 'right') {
-          $related_videos_left .= '
-          <div class="mod full clearfix mod top-space">
-            <div class="mainstageHeader">
-              <h2 class="blackhead blackheadsmall">'.$field_related_videos_title_1.' <strong>'.$field_related_videos_title_2.'</strong></h2>
-            </div>
-            <section class="copy clearfix">
-            '.$field_related_videos_description.'
-            '.$related_videos_link_tag;
-        }
-        else {
-          $related_videos_right .= '
-            <div class="mod">
-              <div class="mainstageHeader">
-                <h2 class="blackhead blackheadsmall">'.$field_related_videos_title_1.' <strong>'.$field_related_videos_title_2.'</strong></h2>
-              </div>
-              <div class="initiativeRightBody copy">
-                '.$field_related_videos_description.'
-                '.$related_videos_link_tag.'
-                <div class="mainstageVideos clearfix">
-          ';
-        }
-      
-        $field_related_videos_iterations = field_get_items('field_collection_item', $item, 'field_related_videos_iteration');
-        if (!empty($field_related_videos_iterations)) {
-          $field_related_videos_iteration_items = array();
-          foreach ($field_related_videos_iterations as $field_related_videos_iteration) {
-            $field_related_videos_iteration_items[] = entity_revision_load('field_collection_item', $field_related_videos_iteration['revision_id']); //load current revision of collection
-          }
-          $a = 0;
-          foreach ($field_related_videos_iteration_items as $iteration_item) {
-            $rvi_video_title = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_title'));
-            $field_rvi_video_title = (isset($rvi_video_title['value'])?$rvi_video_title['value']:'');  
-
-            $rvi_video_info = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_info'));
-            $field_rvi_video_info = (isset($rvi_video_info['value'])?$rvi_video_info['value']:'');  
-
-            $rvi_video_thumbnail = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_thumbnail'));
-            $field_rvi_video_thumbnail = (isset($rvi_video_thumbnail['uri'])?$rvi_video_thumbnail['uri']:'');
-
-            $rvi_video_link = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_link'));
-            $field_rvi_video_link_url = (isset($rvi_video_link['url'])?$rvi_video_link['url']:'');  
-            $field_rvi_video_link_label = (isset($rvi_video_link['title'])?$rvi_video_link['title']:'');  
-            $field_rvi_video_link_target = (isset($rvi_video_link['attributes']['target'])?$rvi_video_link['attributes']['target']:'_self');
-
-
-            $class = ((($a+1)%2 == 0)?'even':'odd');
-            if (strtolower($field_related_videos_position) != 'right') {
-              $related_videos_left .='
-                 <div class="relatedVideos clearfix">
-                <a href="'.$field_rvi_video_link_url.'" class="relatedVideosImage" target="'.$field_rvi_video_link_target.'">
-                  <img alt="'.$field_rvi_video_title.'" src="'.file_create_url($field_rvi_video_thumbnail).'">
-                  <div class="playButton25"></div>
-                </a>
-                <div class="relatedVideosText">
-                  <h2>'.substr($field_rvi_video_title,0, 45).'</h2>
-                  <p>'.$field_rvi_video_info.'</p>
-                  '.l($field_rvi_video_link_label, $field_rvi_video_link_url, array('attributes' => array('target' => $field_rvi_video_link_target))).'
-                </div>
-                </div>
-              ';
-            }
-            else {
-              $related_videos_right .='
-                 <div class="relatedVideos clearfix '.$class.'">
-                <a href="'.$field_rvi_video_link_url.'" class="relatedVideosImage" target="'.$field_rvi_video_link_target.'">
-                  <img alt="'.$field_rvi_video_title.'" src="'.file_create_url($field_rvi_video_thumbnail).'">
-                  <div class="playButton25"></div>
-                </a>
-                <div class="relatedVideosText">
-                  <h2>'.substr($field_rvi_video_title,0, 45).'</h2>
-                  <p>'.$field_rvi_video_info.'</p>
-                  '.l($field_rvi_video_link_label, $field_rvi_video_link_url, array('attributes' => array('target' => $field_rvi_video_link_target))).'
-                </div>
-                </div>
-              ';
-            }
-            $a++;
-          }
-        }
-        if (strtolower($field_related_videos_position) != 'right') {
-          $related_videos_left .= '
-            </section>
-          </div>';
-        }
-        else {
-          $related_videos_right .= '</div>
-              </div>
-            </div>';
-        }
-      }
-    }
-  }
-
-
-  /** Black Box Section **/
-  
-  $field_black_box = field_get_items('node', $node, 'field_black_box_section');
-  if (!empty($field_black_box)) {
-    $field_black_box_section_items = array();
-    foreach ($field_black_box as $field_black_box_section) {
-      $field_black_box_section_items[] = entity_revision_load('field_collection_item', $field_black_box_section['revision_id']); //load current revision of collection
-    }
-    foreach ($field_black_box_section_items as $item) {
-      $black_box_title = characterunite_reset(field_get_items('field_collection_item', $item, 'field_black_box_title'));
-      $field_black_box_title = (isset($black_box_title['value'])?$black_box_title['value']:'');
-
-      $black_box_title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_black_box_title_2'));
-      $field_black_box_title_2 = (isset($black_box_title_2['value'])?$black_box_title_2['value']:'');
-
-      $black_box_description = characterunite_reset(field_get_items('field_collection_item', $item, 'field_black_box_description'));
-      $field_black_box_description = (isset($black_box_description['value'])?$black_box_description['value']:'');
-
-      $black_box_more_link = characterunite_reset(field_get_items('field_collection_item', $item, 'field_black_box_more_link'));
-      $field_black_box_more_link = (isset($black_box_more_link['value'])?$black_box_more_link['value']:'');
-    }   
-  }
-  
-  $issues_banner = characterunite_reset(field_get_items('node', $node, 'field_issues_banner'));
-  $field_issues_banner = (isset($issues_banner['uri'])?$issues_banner['uri']:'');
-
-  $issues_banner_link = characterunite_reset(field_get_items('node', $node, 'field_issues_banner_link'));
-  $field_issues_banner_link = (isset($issues_banner_link['url'])?$issues_banner_link['url']:'');
-  $field_issues_banner_target = (isset($issues_banner_link['attributes']['target'])?$issues_banner_link['attributes']['target']:'');
-
-  $take_action_title_1 = characterunite_reset(field_get_items('node', $node, 'field_issues_take_action_title_1'));
-  $field_issues_take_action_title_1 = (isset($take_action_title_1['value'])?$take_action_title_1['value']:'');
-
-  $take_action_title_2 = characterunite_reset(field_get_items('node', $node, 'field_issues_take_action_title_2'));
-  $field_issues_take_action_title_2 = (isset($take_action_title_2['value'])?$take_action_title_2['value']:'');
-
-  $field_issues_take_action_list = field_get_items('node', $node, 'field_issues_take_action_list');
-  
-  $facts_title_1 = characterunite_reset(field_get_items('node', $node, 'field_issues_facts_title_1'));
-  $field_issues_facts_title_1 = (isset($facts_title_1['value'])?$facts_title_1['value']:'');
-
-  $facts_title_2 = characterunite_reset(field_get_items('node', $node, 'field_issues_facts_title_2'));
-  $field_issues_facts_title_2 = (isset($facts_title_2['value'])?$facts_title_2['value']:'');
-
-  $field_issues_facts_list = (field_get_items('node', $node, 'field_issues_facts_list'));  
-?>
 	<div class="showcaseMain layoutWide">
 		<div id="colMain">
 			<div class="videoFrame">
-				<iframe src="http://player.theplatform.com/p/OyMl-B/oIChOKSBFJ6b/select/<?php echo $field_video_id;?>" width="688" height="387" frameborder="0" scrolling="no"></iframe>
+				<iframe src="http://player.theplatform.com/p/OyMl-B/oIChOKSBFJ6b/select/<?php print $field_video_id; ?>" width="688" height="387" frameborder="0" scrolling="no"></iframe>
 			</div>
-			<?php if ($field_transcript_title != '' || $field_transcript_description != '') { ?>
-			<div class="mod full caption clearfix">
-				<h1><?php echo $field_transcript_title; ?></h1>	
-				<?php if ($field_transcript_more_link != 0) { ?>
-				<h2><span class="Tpane_desc" style="height:45px"><?php echo $field_transcript_description; ?></span></h2><a class="Tpane_desc_more atmore" href="javascript:;" onclick="TDesc('Tpane_desc', 'less', 45, '');">More</a><a class="Tpane_desc_less atmore" href="javascript:;" onclick="TDesc('Tpane_desc', 'more', 45, '');">Less</a>
-				<?php 
-				}
-				else {
-				?>
-				<h2><?php echo $field_transcript_description; ?></h2>
-				<?php } ?>
-			</div>
-			<?php 
-			}
-			if ($field_issues_banner != '') {
-			?>
-			<div class="svu-nomore-im">
-				<?php
-					if ($field_issues_banner_link != '') {
-				?>
-				<a href="<?php echo $field_issues_banner_link; ?>" target="<?php echo $field_issues_banner_target; ?>">
-					<img src="<?php echo file_create_url($field_issues_banner); ?>">
-				</a>
-				<?php 
-				}
-				else {
-				?>
-					<img src="<?php echo file_create_url($field_issues_banner); ?>">
-				<?php } ?>
-			</div>
-			<?php
-			}
-			if (!empty($field_issues_take_action_title_1) || !empty($field_issues_take_action_title_2) || !empty($field_issues_take_action_list)) {
-			?>
-			<div class="takeActionFrame">
-				<div class="takeActionHeader">
-					<h2 class="blackhead"><?php echo (!empty($field_issues_take_action_title_1)?$field_issues_take_action_title_1:'');?> <strong><?php echo (!empty($field_issues_take_action_title_2)?$field_issues_take_action_title_2:'');?></strong></h2>
-				</div>
-				<div class="takeActionSection">
-					<ul>
-						<?php
-							$field_issues_take_action_list_count = count($field_issues_take_action_list);
-							if ($field_issues_take_action_list_count > 0) {
-								for($take_action = 0; $take_action < $field_issues_take_action_list_count; $take_action++) {
-						?>
-							<li class="takeAction clearfix">
-									<header><?php echo $field_issues_take_action_list[$take_action]['value']; ?></header>
-							</li>
-						<?php
-								}
-							}
-						?>
-					</ul>
-				</div>
-			</div>
-			<?php
-			}
-			if (!empty($field_issues_facts_title_1) || !empty($field_issues_facts_title_2) || !empty($field_issues_facts_list)) {			
-			?>
-			<div class="resourcesAndFactsFrame">
-				<div class="resourcesAndFactsHeader">
-					<h2 class="blackhead"><?php echo (!empty($field_issues_facts_title_1)?$field_issues_facts_title_1:'');?> <strong><?php echo (!empty($field_issues_facts_title_2)?$field_issues_facts_title_2:'');?></strong></h2>
-				</div>
-				<div class="theFactsSection">
-					<ul>
-						<?php
-							$field_issues_facts_list_count = count($field_issues_facts_list);
-							if ($field_issues_facts_list_count > 0) {
-								for($facts_list = 0; $facts_list < $field_issues_facts_list_count; $facts_list++) {
-						?>					
-						<li>
-							<?php echo $field_issues_facts_list[$facts_list]['value']; ?>
-						</li>
-						<?php
-								}
-							}
-						?>
-					</ul>
-				</div>
-			</div>
-			<?php
-			}
-			if ($related_videos_left != '') {
-				echo $related_videos_left;
-			}
-			if ($related_images_left != '') {
-				echo $related_images_left;
-			}
-			?>
+			<?php if ($field_transcript_title != '' || $field_transcript_description != ''): ?>
+        <div class="mod full caption clearfix">
+          <h1>
+            <?php print $field_transcript_title; ?>
+          </h1>	
+          <?php if ($field_transcript_more_link != 0 && $field_transcript_description != ''): ?>
+            <h2>
+              <span class="Tpane_desc" style="height:50px">
+                <?php print $field_transcript_description; ?>
+              </span>
+            </h2>
+            <a class="Tpane_desc_more atmore" href="javascript:;" onclick="TDesc('Tpane_desc', 'less', 50, '');">More</a>
+            <a class="Tpane_desc_less atmore" href="javascript:;" onclick="TDesc('Tpane_desc', 'more', 50, '');">Less</a>
+          <?php elseif ($field_transcript_more_link == 0 && $field_transcript_description != ''): ?>
+            <h2>
+              <?php print $field_transcript_description; ?>
+            </h2>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
+
+			<?php if ($field_issues_banner != '') : ?>
+        <div class="svu-nomore-im">
+          <?php if ($field_issues_banner_link != ''): ?>
+            <a href="<?php print $field_issues_banner_link; ?>" target="<?php print $field_issues_banner_target; ?>">
+              <img src="<?php print file_create_url($field_issues_banner); ?>">
+            </a>
+          <?php else: ?>
+            <img src="<?php print file_create_url($field_issues_banner); ?>">
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
+
+			<?php if ((isset($field_issues_take_action_title_1) && $field_issues_take_action_title_1 != '') || 
+                (isset($field_issues_take_action_title_2) && $field_issues_take_action_title_2 != '') || 
+                (isset($field_issues_take_action_list) && count($field_issues_take_action_list) > 0)): ?>
+        <div class="takeActionFrame">
+          <div class="takeActionHeader">
+            <h2 class="blackhead">
+              <?php print (!empty($field_issues_take_action_title_1)?$field_issues_take_action_title_1:'');?> 
+              <strong>
+                <?php print (!empty($field_issues_take_action_title_2)?$field_issues_take_action_title_2:'');?>
+              </strong>
+            </h2>
+          </div>
+          <div class="takeActionSection">
+            <?php if (isset($field_issues_take_action_list) && count($field_issues_take_action_list) > 0): ?>
+              <ul>
+                <?php $field_issues_take_action_list_count = count($field_issues_take_action_list); ?>
+                <?php for($take_action = 0; $take_action < $field_issues_take_action_list_count; $take_action++): ?>
+                  <li class="takeAction clearfix">
+                      <header>
+                        <?php print $field_issues_take_action_list[$take_action]['value']; ?>
+                      </header>
+                  </li>
+                <?php endfor; ?>
+              </ul>
+            <?php endif; ?>
+          </div>
+        </div>
+      <?php endif; ?>
+      
+			<?php if ((isset($field_issues_facts_title_1) && $field_issues_facts_title_1 != '') || 
+                (isset($field_issues_facts_title_2) && $field_issues_facts_title_2 != '') || 
+                (isset($field_issues_facts_list) && count($field_issues_facts_list) > 0)): ?>      
+        <div class="resourcesAndFactsFrame">
+          <div class="resourcesAndFactsHeader">
+            <h2 class="blackhead">
+              <?php print (!empty($field_issues_facts_title_1)?$field_issues_facts_title_1:'');?> 
+              <strong>
+                <?php print (!empty($field_issues_facts_title_2)?$field_issues_facts_title_2:'');?>
+              </strong>
+            </h2>
+          </div>
+          <div class="theFactsSection">
+            <?php if (isset($field_issues_facts_list) && count($field_issues_facts_list) > 0): ?>
+              <ul>
+                <?php $field_issues_facts_list_count = count($field_issues_facts_list); ?>
+                <?php for($facts_list = 0; $facts_list < $field_issues_facts_list_count; $facts_list++): ?>					
+                  <li>
+                    <?php print $field_issues_facts_list[$facts_list]['value']; ?>
+                  </li>
+                <?php endfor; ?>
+              </ul>
+            <?php endif; ?>
+          </div>
+        </div>
+      <?php endif; ?>
+
+			<?php //print $related_videos_left; ?>
+			<?php if (isset($related_videos_left) && count($related_videos_left) > 0):?>
+        <?php foreach ($related_videos_left as $id => $related_videos_fields): ?>
+          <div class="mod full clearfix mod top-space">
+            <div class="mainstageHeader">
+              <h2 class="blackhead blackheadsmall">
+                <?php print $related_videos_fields['field_related_videos_title_1']; ?> 
+                <strong>
+                  <?php print $related_videos_fields['field_related_videos_title_2']; ?>
+                </strong>
+              </h2>
+            </div>
+            <section class="copy clearfix">
+                <?php print $related_videos_fields['field_related_videos_description']; ?>
+                <?php print $related_videos_fields['related_videos_link_tag']; ?>
+                  <?php foreach ($related_videos_fields['related_videos_iteration'] as $key => $iteration_fields): ?>
+                     <div class="relatedVideos clearfix">
+                      <a href="<?php print $iteration_fields['field_rvi_video_link_url']; ?>" class="relatedVideosImage" target="<?php print $iteration_fields['field_rvi_video_link_target']; ?>">
+                        <img alt="<?php print $iteration_fields['field_rvi_video_title']; ?>" src="<?php print file_create_url($iteration_fields['field_rvi_video_thumbnail']); ?>">
+                        <div class="playButton25"></div>
+                      </a>
+                      <div class="relatedVideosText">
+                        <h2>
+                          <?php print substr($iteration_fields['field_rvi_video_title'], 0, 45); ?>
+                        </h2>
+                        <p>
+                          <?php print substr($iteration_fields['field_rvi_video_info'], 0, 45); ?>
+                        </p>
+                        <?php print l($iteration_fields['field_rvi_video_link_label'], $iteration_fields['field_rvi_video_link_url'], array('attributes' => array('target' => $iteration_fields['field_rvi_video_link_target']))); ?>
+                      </div>
+                    </div>
+                  <?php endforeach; ?>
+            </section>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+      
+			<?php //print_r($related_images_left); ?>
+			<?php if (isset($related_images_left) && count($related_images_left) > 0):?>
+        <?php foreach ($related_images_left as $id => $related_images_fields): ?>       
+          <div class="mod full clearfix mod">
+            <div class="mainstageHeader">
+              <h2 class="blackhead blackheadsmall">
+                <?php print $related_images_fields['field_related_image_title_1']; ?> 
+                <strong>
+                  <?php print $related_images_fields['field_related_image_title_2']; ?>
+                </strong>
+              </h2>
+            </div>
+            <div id="sponsors" class="initiativeRightBody copy">
+              <div>
+                <?php print $related_images_fields['field_related_image_description']; ?>
+              </div>
+              <section class="copy clearfix">
+                <?php foreach ($related_images_fields['related_images_iteration'] as $key => $iteration_fields): ?>
+                  <a href="<?php print $iteration_fields['field_rii_image_link_url']; ?>" target="<?php print $iteration_fields['field_rii_image_link_target']; ?>">
+                    <img src="<?php print file_create_url($iteration_fields['field_rii_image']); ?>" alt="<?php print $iteration_fields['field_rii_image_link_label']; ?>" />
+                  </a>
+                <?php endforeach; ?>
+              </section>
+              <?php print $related_images_fields['related_image_link_tag']; ?>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+
 			<div class="clear"></div>
 			<?php if ($region['facebook_discussion']): ?>
 				<div class="social">
@@ -506,34 +249,102 @@
 		</div>
 		<!-- initiativesLeft end -->
 		<div id="colSide">
-			<?php if ($field_black_box_title != '' || $field_black_box_title_2 != '' || $field_black_box_description != '') { ?>
-			<div class="mod solid">
-				<?php if ($field_black_box_title != '' || $field_black_box_title_2 != '') { ?>
-				<h2 class="title"><?php echo $field_black_box_title; ?> <br/><small><?php echo $field_black_box_title_2; ?></small></h2>
-				<?php } ?>
-				<?php 
-				if ($field_black_box_more_link != 0) {
-					echo '<span class="blackpane_desc" style="height:250px">'.$field_black_box_description.'</span><a class="blackpane_desc_more amore" href="javascript:;" onclick="LeftDesc(\'blackpane_desc\', \'less\', 250, \'\');">More</a><a class="blackpane_desc_less amore" href="javascript:;" onclick="LeftDesc(\'blackpane_desc\', \'more\', 250, \'\');">Less</a>';
-				}
-				else {
-					echo $field_black_box_description;
-				}
-				?>
-				<?php if ($region['spread_the_word']): ?>
-          <aside class="share">
-					<?php print render($region['spread_the_word']); ?>
-          </aside>
-				<?php endif; ?>					
-			</div>
-			<?php
-			  }
-			  if ($related_videos_right != '') {
-				echo $related_videos_right;
-			  }
-			  if ($related_images_right != '') {
-				echo $related_images_right;
-			  }			  
-			?>
+      <?php //Balckbox ?>
+			<?php if (!(empty($node->field_black_box_section)) && ($field_black_box_title != '' || 
+              $field_black_box_title_2 != '' || $field_black_box_description != '')): ?>
+        <div class="mod solid">
+          <h2 class="title">
+            <?php print $field_black_box_title; ?> 
+            <br/>
+            <small>
+              <?php print $field_black_box_title_2; ?>
+            </small>
+          </h2>
+          <?php if ($field_black_box_more_link != 0): ?>
+            <span class="blackpane_desc" style="height:250px">
+              <?php print $field_black_box_description; ?>
+            </span>
+            <a class="blackpane_desc_more amore" href="javascript:;" onclick="LeftDesc('blackpane_desc', 'less', 250, '');">More</a>
+            <a class="blackpane_desc_less amore" href="javascript:;" onclick="LeftDesc('blackpane_desc', 'more', 250, '');">Less</a>';
+          <?php else: ?>
+            <?php print $field_black_box_description; ?>
+          <?php endif; ?>
+          <?php if ($region['spread_the_word']): ?>
+            <aside class="share">
+            <?php print render($region['spread_the_word']); ?>
+            </aside>
+          <?php endif; ?>					
+        </div>
+      <?php endif; ?>
+
+      <?php //print $related_videos_right; ?>
+			<?php if (isset($related_videos_right) && count($related_videos_right) > 0):?>
+        <?php foreach ($related_videos_right as $id => $related_videos_fields): ?>
+          <div class="mod">
+            <div class="mainstageHeader">
+              <h2 class="blackhead blackheadsmall">
+                <?php print $related_videos_fields['field_related_videos_title_1']; ?> 
+                <strong>
+                  <?php print $related_videos_fields['field_related_videos_title_2']; ?>
+                </strong>
+              </h2>
+            </div>
+            <div class="initiativeRightBody copy">
+              <?php print $related_videos_fields['field_related_videos_description']; ?>
+              <?php print $related_videos_fields['related_videos_link_tag']; ?>
+                <div class="mainstageVideos clearfix">
+                <?php foreach ($related_videos_fields['related_videos_iteration'] as $key => $iteration_fields): ?>
+                   <div class="relatedVideos clearfix">
+                    <a href="<?php print $iteration_fields['field_rvi_video_link_url']; ?>" class="relatedVideosImage" target="<?php print $iteration_fields['field_rvi_video_link_target']; ?>">
+                      <img alt="<?php print $iteration_fields['field_rvi_video_title']; ?>" src="<?php print file_create_url($iteration_fields['field_rvi_video_thumbnail']); ?>">
+                      <div class="playButton25"></div>
+                    </a>
+                    <div class="relatedVideosText">
+                      <h2>
+                        <?php print substr($iteration_fields['field_rvi_video_title'], 0, 45); ?>
+                      </h2>
+                      <p>
+                        <?php print substr($iteration_fields['field_rvi_video_info'], 0, 45); ?>
+                      </p>
+                      <?php print l($iteration_fields['field_rvi_video_link_label'], $iteration_fields['field_rvi_video_link_url'], array('attributes' => array('target' => $iteration_fields['field_rvi_video_link_target']))); ?>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+                </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+      
+      <?php //print $related_images_right; ?>
+			<?php if (isset($related_images_right) && count($related_images_right) > 0):?>
+        <?php foreach ($related_images_right as $id => $related_images_fields): ?>
+          <div class="mod">
+            <div class="mainstageHeader">
+              <h2 class="blackhead blackheadsmall">
+                <?php print $related_images_fields['field_related_image_title_1']; ?> 
+                <strong>
+                  <?php print $related_images_fields['field_related_image_title_2']; ?>
+                </strong>
+              </h2>
+            </div>
+            <div class="initiativeRightBody copy">
+              <div>
+                <?php print $related_images_fields['field_related_image_description']; ?>
+              </div>
+              <section class="copy">
+                <?php foreach ($related_images_fields['related_images_iteration'] as $key => $iteration_fields): ?>
+                  <a href="<?php print $iteration_fields['field_rii_image_link_url']; ?>" target="<?php print $iteration_fields['field_rii_image_link_target']; ?>">
+                    <img class="featured" src="<?php print file_create_url($iteration_fields['field_rii_image']); ?>" alt="<?php print $iteration_fields['field_rii_image_link_label']; ?>" border="0" width="180" style="margin-bottom: 30px;">
+                  </a>
+                <?php endforeach; ?>
+              </section>
+              <?php print $related_images_fields['related_image_link_tag']; ?>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?> 
+
 		</div>
 		<!-- initiativesRight end -->
 	</div>

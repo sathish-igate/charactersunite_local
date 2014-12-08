@@ -77,83 +77,86 @@
  * @see template_preprocess_node()
  * @see template_process()
  */
-print_r($sathish);
 ?>
-
-<?php
-  /** Video Section **/
-  $field_video_section_value = $content['field_video_section']['#items'][0]['value'];
-  $field_video_section = $content['field_video_section'][0]['entity']['field_collection_item'][$field_video_section_value];
-  $field_video_id = $field_video_section['field_video_id']['#items'][0]['value'];
-
-  $field_transcript_title = (isset($field_video_section['field_transcript_title'])?$field_video_section['field_transcript_title']['#items'][0]['value']:'');
-
-  $field_transcript_description = (isset($field_video_section['field_transcript_description'])?$field_video_section['field_transcript_description']['#items'][0]['value']:'');
-
-  $field_transcript_more_link = $field_video_section['field_transcript_more_link']['#items'][0]['value'];
-
-  $field_video_description = (isset($field_video_section['field_video_description'])?$field_video_section['field_video_description']['#items'][0]['value']:'');
-
-  /** Black Box Section *
-  $field_black_box_section_value = $content['field_black_box_section']['#items'][0]['value'];
-  $field_black_box_section = $content['field_black_box_section'][0]['entity']['field_collection_item'][$field_black_box_section_value];
-
-  $field_black_box_title = (isset($field_black_box_section['field_black_box_title'])?$field_black_box_section['field_black_box_title']['#items'][0]['value']:'');
-  $field_black_box_title_2 = (isset($field_black_box_section['field_black_box_title_2'])?$field_black_box_section['field_black_box_title_2']['#items'][0]['value']:'');
-
-  $field_black_box_description = (isset($field_black_box_section['field_black_box_description'])?$field_black_box_section['field_black_box_description']['#items'][0]['value']:'');
-  if ($field_black_box_description != '' && $field_black_box_description == strip_tags($field_black_box_description)) {
-	$field_black_box_description = '<p>'.$field_black_box_description.'</p>';
-  }
-
-  $field_black_box_more_link = (isset($field_black_box_section['field_black_box_more_link'])?$field_black_box_section['field_black_box_more_link']['#items'][0]['value']:'');
-
-  $field_add_spread_the_word_block = (isset($field_black_box_section['field_add_spread_the_word_block'])?$field_black_box_section['field_add_spread_the_word_block']['#items'][0]['value']:'');
-  */
-?>
-	<div class="showcaseMain layoutWide">
+  <div class="showcaseMain layoutWide">
 		<div id="colMain">
 			<div class="videoFrame">
-				<iframe src="http://player.theplatform.com/p/OyMl-B/oIChOKSBFJ6b/select/<?php echo $field_video_id; ?>" width="688" height="387" frameborder="0" scrolling="no"></iframe>
+				<iframe src="http://player.theplatform.com/p/OyMl-B/oIChOKSBFJ6b/select/<?php print $field_video_id; ?>" width="688" height="387" frameborder="0" scrolling="no"></iframe>
 			</div>
-			<?php if ($field_transcript_title != '' || $field_transcript_description != '') { ?>
-			<div class="mod full caption clearfix">
-				<h1><?php echo $field_transcript_title; ?></h1>	
-				<?php if ($field_transcript_more_link != 0) { ?>
-				<h2><span class="Tpane_desc" style="height:45px"><?php echo $field_transcript_description; ?></span></h2><a class="Tpane_desc_more atmore" href="javascript:;" onclick="TDesc('Tpane_desc', 'less', 45, '');">More</a><a class="Tpane_desc_less atmore" href="javascript:;" onclick="TDesc('Tpane_desc', 'more', 45, '');">Less</a>
-				<?php 
-				}
-				else {
-				?>
-				<h2><?php echo $field_transcript_description; ?></h2>
-				<?php } ?>
-			</div>
-			<?php } ?>
-		</div>
-		<!-- initiativesLeft end -->
+			<?php if ($field_transcript_title != '' || $field_transcript_description != ''): ?>
+        <div class="mod full caption clearfix">
+          <h1>
+            <?php print $field_transcript_title; ?>
+          </h1>	
+          <?php if ($field_transcript_more_link != 0 && $field_transcript_description != ''): ?>
+            <h2>
+              <span class="Tpane_desc" style="height:50px">
+                <?php print $field_transcript_description; ?>
+              </span>
+            </h2>
+            <a class="Tpane_desc_more atmore" href="javascript:;" onclick="TDesc('Tpane_desc', 'less', 50, '');">More</a>
+            <a class="Tpane_desc_less atmore" href="javascript:;" onclick="TDesc('Tpane_desc', 'more', 50, '');">Less</a>
+          <?php elseif ($field_transcript_more_link == 0 && $field_transcript_description != ''): ?>
+            <h2>
+              <?php print $field_transcript_description; ?>
+            </h2>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
+			<?php if ($field_video_description != ''): ?>
+        <div class="mod">
+          <section class="copy clearfix"><?php print $field_video_description; ?></section>
+          <?php if ($field_black_box_title == '' && $field_black_box_title_2 == '' && $field_black_box_description == '' && $region['spread_the_word'] ): ?>
+            <aside class="share-nfl">
+              <?php print render($region['spread_the_word']); ?>
+            </aside>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
+			<?php if (($field_ds_title_1 != '' || $field_ds_title_2 != '' || $field_ds_body != '') && strtolower($field_ds_position) != 'right'): ?>
+				<div class="mod full clear">
+					<div class="mainstageHeader">
+					  <h2 class="blackhead blackheadsmall">
+              <?php print $field_ds_title_1; ?> 
+              <strong>
+                <?php print $field_ds_title_2; ?>
+              </strong>
+            </h2>
+					</div>
+					<section class="copy clearfix">
+					  <?php print $field_ds_body; ?>
+					  <?php print $ds_link_tag; ?>
+					</section>
+				</div>
+			<?php endif; ?>
+    </div>
 		<div id="colSide">
-			<?php if ($field_black_box_title != '' || $field_black_box_title_2 != '' || $field_black_box_description != ''): ?>
+      <?php //Balckbox ?>
+			<?php if (!(empty($node->field_black_box_section)) && ($field_black_box_title != '' || 
+              $field_black_box_title_2 != '' || $field_black_box_description != '')): ?>
         <div class="mod solid">
-          <h2 class="title"><?php echo $field_black_box_title; ?> <br/><small><?php echo $field_black_box_title_2; ?></small></h2>
+          <h2 class="title">
+            <?php print $field_black_box_title; ?> 
+            <br/>
+            <small>
+              <?php print $field_black_box_title_2; ?>
+            </small>
+          </h2>
           <?php if ($field_black_box_more_link != 0): ?>
             <span class="blackpane_desc" style="height:250px">
-              <?php echo $field_black_box_description; ?>
+              <?php print $field_black_box_description; ?>
             </span>
-            <a class="blackpane_desc_more amore" href="javascript:;" onclick="LeftDesc(\'blackpane_desc\', \'less\', 250, \'\');">More</a>
-            <a class="blackpane_desc_less amore" href="javascript:;" onclick="LeftDesc(\'blackpane_desc\', \'more\', 250, \'\');">Less</a>';
+            <a class="blackpane_desc_more amore" href="javascript:;" onclick="LeftDesc('blackpane_desc', 'less', 250, '');">More</a>
+            <a class="blackpane_desc_less amore" href="javascript:;" onclick="LeftDesc('blackpane_desc', 'more', 250, '');">Less</a>';
           <?php else: ?>
-            <?php echo $field_black_box_description; ?>
+            <?php print $field_black_box_description; ?>
           <?php endif; ?>
           <?php if ($region['spread_the_word']): ?>
             <aside class="share">
             <?php print render($region['spread_the_word']); ?>
             </aside>
-          <?php endif; ?>
+          <?php endif; ?>					
         </div>
-			<?php endif; ?>
-		</div>
-		<!-- initiativesRight end -->
-	</div>
-<?php
-
-?>  
+      <?php endif; ?>
+    </div>
+  </div>
