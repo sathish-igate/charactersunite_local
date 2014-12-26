@@ -918,7 +918,7 @@ aside.share h1 {
 	padding:3px 0 0;
 }
 #main .mod-article aside.share {
-	margin:36px 0 8px;
+	margin:8px 0 8px;
 }
 .mod-article aside.share h1 {
 	color:#787878;
@@ -1273,7 +1273,7 @@ td, th {
 .blackhead {
 	background-color: #252525;
 	color: #fff;
-	font-size: 38px;
+	font-size: 24px;
 	text-transform: uppercase;
 	font-weight: normal;
 	line-height: 40px;
@@ -1290,7 +1290,7 @@ strong {
 .blackhead strong {
 	font-family: 'CantarellBold';
 	font-weight: bold;
-	font-size: 44px;
+	font-size: 30px;
 	display: block;
 }
 .blackheadsmall {
@@ -1490,7 +1490,7 @@ strong {
 	border-bottom: none;
 }
 .takeActionSection ul li header {
-	font-weight: bold;
+	/*font-weight: bold;*/
 	padding-top:4px;
 	width: 82%;
 	float: left; }
@@ -1880,6 +1880,7 @@ strong {
 	padding: 16px;
 	font-size: .9em;
 	margin-top: 0px;
+  line-height: 20px;
 }
 .mod .cta {
 	color: black;
@@ -2323,7 +2324,7 @@ strong {
 .gallery > * {
 	float:left;
 	margin-left:10px;
-	margin-bottom: 12px;
+	margin-top: 12px;
 }
 .gallery > * a,
 .gallery > * img {

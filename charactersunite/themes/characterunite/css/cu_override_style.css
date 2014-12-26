@@ -552,6 +552,9 @@ h2.sectionText {
   padding-top: 10px;
   width: 382px;
 }
+.biography_links {
+  margin-top:10px;
+}
 .biography_links div.field-name-field-biography-links {
   margin: 0;
   padding: 4px 0;
@@ -631,7 +634,7 @@ div.share li {
   margin-left: 3px;
   margin-right: 11px;
 }
-.announcements-list div {
+.announcements-list .view-content div {
   width: 100%;
   display: block;
   height: auto;
@@ -810,3 +813,13 @@ margin-right: 11px;
 width: 248px;
 }
 /*** Space between issues end ***/
+
+img.thumbnailMid {
+  width:250px;
+  height:130px;
+  margin:8px 0px;
+}
+.middlePlay {
+  top:40px;
+  left:80px;
+}

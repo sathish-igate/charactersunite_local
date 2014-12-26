@@ -118,9 +118,8 @@
         </div>
       <?php endif; ?>
 
-			<?php if ((isset($field_issues_take_action_title_1) && $field_issues_take_action_title_1 != '') || 
-                (isset($field_issues_take_action_title_2) && $field_issues_take_action_title_2 != '') || 
-                (isset($field_issues_take_action_list) && count($field_issues_take_action_list) > 0)): ?>
+			<?php /* if (trim($field_issues_take_action_title_1) != '' && trim($field_issues_take_action_title_2) != '' || 
+                (trim($field_issues_take_action_list) != '' && count($field_issues_take_action_list) > 0)): ?>
         <div class="takeActionFrame">
           <div class="takeActionHeader">
             <h2 class="blackhead">
@@ -145,11 +144,39 @@
             <?php endif; ?>
           </div>
         </div>
+      <?php endif; */ ?>
+
+			<?php if (isset($take_action) && count($take_action) > 0): ?>
+        <?php foreach ($take_action as $id => $take_action_fields): ?>   
+          <div class="takeActionFrame">
+            <div class="takeActionHeader">
+              <h2 class="blackhead">
+                <?php print (!empty($take_action_fields['field_take_action_title_1'])?$take_action_fields['field_take_action_title_1']:'');?> 
+                <strong>
+                  <?php print (!empty($take_action_fields['field_take_action_title_2'])?$take_action_fields['field_take_action_title_2']:'');?> 
+                </strong>
+              </h2>
+            </div>
+            <div class="takeActionSection">
+              <?php if (isset($take_action_fields['field_take_action_list']) && count($take_action_fields['field_take_action_list']) > 0): ?>
+                <ul>
+                  <?php $field_take_action_list_count = count($take_action_fields['field_take_action_list']); ?>
+                  <?php for($action_list = 0; $action_list < $field_take_action_list_count; $action_list++): ?>
+                    <li class="takeAction clearfix">
+                        <header>
+                          <?php print $take_action_fields['field_take_action_list'][$action_list]['value']; ?>
+                        </header>
+                    </li>
+                  <?php endfor; ?>
+                </ul>
+              <?php endif; ?>
+            </div>
+          </div>
+        <?php endforeach; ?>
       <?php endif; ?>
-      
-			<?php if ((isset($field_issues_facts_title_1) && $field_issues_facts_title_1 != '') || 
-                (isset($field_issues_facts_title_2) && $field_issues_facts_title_2 != '') || 
-                (isset($field_issues_facts_list) && count($field_issues_facts_list) > 0)): ?>      
+
+			<?php /* if (trim($field_issues_facts_title_1) != '' || trim($field_issues_facts_title_2) != '' || 
+            (trim($field_issues_facts_list != '') && count($field_issues_facts_list) > 0)): ?>      
         <div class="resourcesAndFactsFrame">
           <div class="resourcesAndFactsHeader">
             <h2 class="blackhead">
@@ -160,7 +187,7 @@
             </h2>
           </div>
           <div class="theFactsSection">
-            <?php if (isset($field_issues_facts_list) && count($field_issues_facts_list) > 0): ?>
+            <?php if (trim($field_issues_facts_list != '') && count($field_issues_facts_list) > 0): ?>
               <ul>
                 <?php $field_issues_facts_list_count = count($field_issues_facts_list); ?>
                 <?php for($facts_list = 0; $facts_list < $field_issues_facts_list_count; $facts_list++): ?>					
@@ -172,8 +199,37 @@
             <?php endif; ?>
           </div>
         </div>
-      <?php endif; ?>
+      <?php endif; */ ?>
 
+			<?php if (isset($facts) && count($facts) > 0): ?>
+        <?php foreach ($facts as $id => $facts_fields): ?>   
+          <div class="resourcesAndFactsFrame">
+            <div class="resourcesAndFactsHeader">
+              <h2 class="blackhead">
+                <?php print (!empty($facts_fields['field_facts_title_1'])?$facts_fields['field_facts_title_1']:'');?> 
+                <strong>
+                  <?php print (!empty($facts_fields['field_facts_title_2'])?$facts_fields['field_facts_title_2']:'');?> 
+                </strong>
+              </h2>
+            </div>
+            <div class="theFactsSection">
+              <?php if (isset($facts_fields['field_facts_list']) && count($facts_fields['field_facts_list']) > 0): ?>
+                <ul>
+                  <?php $field_take_action_list_count = count($facts_fields['field_facts_list']); ?>
+                  <?php for($facts_list = 0; $facts_list < $field_take_action_list_count; $facts_list++): ?>
+                    <li>
+                        <header>
+                          <?php print $facts_fields['field_facts_list'][$facts_list]['value']; ?>
+                        </header>
+                    </li>
+                  <?php endfor; ?>
+                </ul>
+              <?php endif; ?>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+      
 			<?php //print $related_videos_left; ?>
 			<?php if (isset($related_videos_left) && count($related_videos_left) > 0):?>
         <?php foreach ($related_videos_left as $id => $related_videos_fields): ?>
@@ -253,13 +309,15 @@
 			<?php if (!(empty($node->field_black_box_section)) && ($field_black_box_title != '' || 
               $field_black_box_title_2 != '' || $field_black_box_description != '')): ?>
         <div class="mod solid">
-          <h2 class="title">
-            <?php print $field_black_box_title; ?> 
-            <br/>
-            <small>
-              <?php print $field_black_box_title_2; ?>
-            </small>
-          </h2>
+          <?php if ($field_black_box_title != '' || $field_black_box_title_2 != ''): ?>
+            <h2 class="title">
+              <?php print $field_black_box_title; ?> 
+              <br/>
+              <small>
+                <?php print $field_black_box_title_2; ?>
+              </small>
+            </h2>
+          <?php endif; ?>
           <?php if ($field_black_box_more_link != 0): ?>
             <span class="blackpane_desc" style="height:250px">
               <?php print $field_black_box_description; ?>

@@ -115,7 +115,30 @@
           <?php endif; ?>
         </div>
       <?php endif; ?>
-			<?php if (($field_ds_title_1 != '' || $field_ds_title_2 != '' || $field_ds_body != '') && strtolower($field_ds_position) != 'right'): ?>
+      
+      <?php //print_r($description_section); ?>      
+      <?php if (isset($description_section) && count($description_section) > 0):?>
+        <?php foreach ($description_section as $id => $description_values): ?>
+          <?php if ((isset($description_values['field_ds_position']) && strtolower($description_values['field_ds_position']) != 'right') &&  
+            ($description_values['field_ds_title_1'] != '' || $description_values['field_ds_title_2'] != '' || 
+            $description_values['field_ds_body'] != '' )):?>
+            <div class="mod full clear">
+              <div class="mainstageHeader">
+                <h2 class="blackhead blackheadsmall">
+                  <?php print $description_values['field_ds_title_1']; ?> 
+                  <strong><?php print $description_values['field_ds_title_2']; ?></strong>
+                </h2>
+              </div>
+              <section class="copy clearfix">
+                <?php print $description_values['field_ds_body']; ?> 
+                <?php print $description_values['ds_link_tag']; ?> 
+              </section>
+            </div>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      <?php endif; ?>
+      
+			<?php /* if (($field_ds_title_1 != '' || $field_ds_title_2 != '' || $field_ds_body != '') && strtolower($field_ds_position) != 'right'): ?>
 				<div class="mod full clear">
 					<div class="mainstageHeader">
 					  <h2 class="blackhead blackheadsmall">
@@ -130,7 +153,7 @@
 					  <?php print $ds_link_tag; ?>
 					</section>
 				</div>
-			<?php endif; ?>
+			<?php endif; */ ?>
       
 			<?php //print $field_half_module_left; ?>
       <?php if (isset($field_half_module_left) && count($field_half_module_left) > 0):?>
@@ -164,8 +187,16 @@
               </div>
               <section class="copy clearfix">
                 <?php print $file_download['field_file_download_description']; ?>
-                <?php print $file_download['file_download_tag']; ?>
-                <?php print $file_download['file_download_link_tag']; ?>
+                <?php if (count($file_download['file_download_tag']) > 0): ?>
+                  <?php foreach ($file_download['file_download_tag'] as $file_key => $file_value): ?>
+                    <?php print $file_value['file']; ?>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+                <?php if (count($file_download['file_download_link_tag']) > 0): ?>
+                  <?php foreach ($file_download['file_download_link_tag'] as $link_key => $link_value): ?>
+                    <?php print $link_value['link']; ?>
+                  <?php endforeach; ?>
+                <?php endif; ?>
                 </p>
               </section>
             </div>
@@ -189,10 +220,13 @@
                 <?php print $related_videos_fields['field_related_videos_description']; ?>
                 <?php print $related_videos_fields['related_videos_link_tag']; ?>
                   <?php foreach ($related_videos_fields['related_videos_iteration'] as $key => $iteration_fields): ?>
+                    <?php $image_size = (getimagesize(file_create_url($iteration_fields['field_rvi_video_thumbnail']))); ?>
+                    <?php $image_size_calss = ($image_size[0] < 100) ? 'playButton25' : 'playButton53 middlePlay'; ?>              
+                    <?php $backlash = (substr($iteration_fields['field_rvi_video_link_url'], 0, 4) != 'http' && substr($iteration_fields['field_rvi_video_link_url'], 0, 1) != '/' && $iteration_fields['field_rvi_video_link_url'] != '') ? '/' : ''; ?>              
                      <div class="relatedVideos clearfix">
-                      <a href="<?php print $iteration_fields['field_rvi_video_link_url']; ?>" class="relatedVideosImage" target="<?php print $iteration_fields['field_rvi_video_link_target']; ?>">
+                      <a href="<?php print $backlash.$iteration_fields['field_rvi_video_link_url']; ?>" class="relatedVideosImage" target="<?php print $iteration_fields['field_rvi_video_link_target']; ?>">
                         <img alt="<?php print $iteration_fields['field_rvi_video_title']; ?>" src="<?php print file_create_url($iteration_fields['field_rvi_video_thumbnail']); ?>">
-                        <div class="playButton25"></div>
+                        <div class="<?php print $image_size_calss; ?>"></div>
                       </a>
                       <div class="relatedVideosText">
                         <h2>
@@ -305,12 +339,16 @@
             </div>
             <div class="initiativeRightBody copy">
               <?php print $file_download['field_file_download_description']; ?>
-              <?php foreach ($file_download['file_download_tag'] as $file_id => $file_value): ?>
-                <?php print $file_value['file']; ?>
-              <?php endforeach; ?>
-              <?php foreach ($file_download['file_download_link_tag'] as $link_id => $link_value): ?>
-                <?php print $link_value['link']; ?>
-              <?php endforeach; ?>              
+                <?php if (count($file_download['file_download_tag']) > 0): ?>
+                  <?php foreach ($file_download['file_download_tag'] as $file_key => $file_value): ?>
+                    <?php print $file_value['file']; ?>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+                <?php if (count($file_download['file_download_link_tag']) > 0): ?>
+                  <?php foreach ($file_download['file_download_link_tag'] as $link_key => $link_value): ?>
+                    <?php print $link_value['link']; ?>
+                  <?php endforeach; ?>
+                <?php endif; ?>              
             </div>
           </div>
         <?php endforeach; ?>
@@ -332,10 +370,13 @@
               <?php print $related_videos_fields['field_related_videos_description']; ?>
               <?php print $related_videos_fields['related_videos_link_tag']; ?>
                 <?php foreach ($related_videos_fields['related_videos_iteration'] as $key => $iteration_fields): ?>
+                  <?php $image_size = (getimagesize(file_create_url($iteration_fields['field_rvi_video_thumbnail']))); ?>
+                  <?php $image_size_calss = ($image_size[0] < 100) ? 'playButton25' : 'playButton53 middlePlay'; ?>
+                  <?php $backlash = (substr($iteration_fields['field_rvi_video_link_url'], 0, 4) != 'http' && substr($iteration_fields['field_rvi_video_link_url'], 0, 1) != '/' && $iteration_fields['field_rvi_video_link_url'] != '') ? '/' : ''; ?>                    
                    <div class="relatedVideos clearfix">
-                    <a href="<?php print $iteration_fields['field_rvi_video_link_url']; ?>" class="relatedVideosImage" target="<?php print $iteration_fields['field_rvi_video_link_target']; ?>">
+                    <a href="<?php print $backlash.$iteration_fields['field_rvi_video_link_url']; ?>" class="relatedVideosImage" target="<?php print $iteration_fields['field_rvi_video_link_target']; ?>">
                       <img alt="<?php print $iteration_fields['field_rvi_video_title']; ?>" src="<?php print file_create_url($iteration_fields['field_rvi_video_thumbnail']); ?>">
-                      <div class="playButton25"></div>
+                      <div class="<?php print $image_size_calss; ?>"></div>
                     </a>
                     <div class="relatedVideosText">
                       <h2>

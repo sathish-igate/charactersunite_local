@@ -113,22 +113,29 @@
           <?php endif; ?>
         </div>
       <?php endif; ?>
-			<?php if (($field_ds_title_1 != '' || $field_ds_title_2 != '' || $field_ds_body != '') && strtolower($field_ds_position) != 'right'): ?>
-				<div class="mod full clear">
-					<div class="mainstageHeader">
-					  <h2 class="blackhead blackheadsmall">
-              <?php print $field_ds_title_1; ?> 
-              <strong>
-                <?php print $field_ds_title_2; ?>
-              </strong>
-            </h2>
-					</div>
-					<section class="copy clearfix">
-					  <?php print $field_ds_body; ?>
-					  <?php print $ds_link_tag; ?>
-					</section>
-				</div>
-			<?php endif; ?>
+
+      <?php //print_r($description_section); ?>      
+      <?php if (isset($description_section) && count($description_section) > 0):?>
+        <?php foreach ($description_section as $id => $description_values): ?>
+          <?php if ((isset($description_values['field_ds_position']) && strtolower($description_values['field_ds_position']) != 'right') &&  
+            ($description_values['field_ds_title_1'] != '' || $description_values['field_ds_title_2'] != '' || 
+            $description_values['field_ds_body'] != '' )):?>
+            <div class="mod full clear">
+              <div class="mainstageHeader">
+                <h2 class="blackhead blackheadsmall">
+                  <?php print $description_values['field_ds_title_1']; ?> 
+                  <strong><?php print $description_values['field_ds_title_2']; ?></strong>
+                </h2>
+              </div>
+              <section class="copy clearfix">
+                <?php print $description_values['field_ds_body']; ?> 
+                <?php print $description_values['ds_link_tag']; ?> 
+              </section>
+            </div>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      <?php endif; ?>
+
     </div>
 		<div id="colSide">
       <?php //Balckbox ?>

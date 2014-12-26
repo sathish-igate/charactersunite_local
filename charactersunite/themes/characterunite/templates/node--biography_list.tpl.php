@@ -103,7 +103,7 @@
                       <h2>
                         <?php print l($sublist['field_bl_section_title'], $sublist['field_bl_section_link_url'], array('attributes' => array('target' => $sublist['field_bl_section_link_target'], 'class' => 'uppercase')));?>
                       </h2>
-                      <?php $link = l($sublist['field_bl_section_link_title'], $sublist['field_bl_section_link_url'], array('attributes' => array('target' => $sublist['field_bl_section_link_target']))); ?>
+                      <?php print $link = l($sublist['field_bl_section_link_title'], $sublist['field_bl_section_link_url'], array('attributes' => array('target' => $sublist['field_bl_section_link_target']))); ?>
                     <?php else: ?>
                       <h2><?php print $sublist['field_bl_section_title']; ?></h2>
                     <?php endif; ?>

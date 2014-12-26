@@ -119,32 +119,38 @@ function characterunite_preprocess_node(&$variables, $hook) {
   /** Description Section Start **/
   if(!(empty($node->field_description_section))) {
     $field_description_sections = field_get_items('node', $node, 'field_description_section');
+    $description_section = array();
     if (!empty($field_description_sections)) {
       $field_description_section_items = array();
       foreach ($field_description_sections as $field_description_section) {
         $field_description_section_items[] = entity_revision_load('field_collection_item', $field_description_section['revision_id']); //load current revision of collection
       }
+      $index = 0;
       foreach ($field_description_section_items as $item) {
         $ds_title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_ds_title_1'));
-        $variables['field_ds_title_1'] = (isset($ds_title_1['value'])?$ds_title_1['value']:'');
+        $description_section[$index]['field_ds_title_1'] = (isset($ds_title_1['value'])?$ds_title_1['value']:'');
 
         $ds_title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_ds_title_2'));
-        $variables['field_ds_title_2'] = (isset($ds_title_2['value'])?$ds_title_2['value']:'');
+        $description_section[$index]['field_ds_title_2'] = (isset($ds_title_2['value'])?$ds_title_2['value']:'');
 
         $ds_body = characterunite_reset(field_get_items('field_collection_item', $item, 'field_ds_body'));
-        $variables['field_ds_body'] = (isset($ds_body['value'])?$ds_body['value']:'');
+        $description_section[$index]['field_ds_body'] = (isset($ds_body['value'])?$ds_body['value']:'');
 
         $ds_link_url = characterunite_reset(field_get_items('field_collection_item', $item, 'field_ds_link'));
         $field_ds_link_url = (isset($ds_link_url['url'])?($ds_link_url['url']):'');
         $field_ds_link_label = (isset($ds_link_url['title'])?($ds_link_url['title']):'');
         $field_ds_link_target = (isset($ds_link_url['attributes']['target'])?($ds_link_url['attributes']['target']):'');
+        $description_section[$index]['ds_link_tag'] = '';
+        if ($field_ds_link_url != '') {
+          $description_section[$index]['ds_link_tag'] = l($field_ds_link_label, $field_ds_link_url, array('attributes' => array('target' => $field_ds_link_target)));
+        } 
 
         $ds_position = characterunite_reset(field_get_items('field_collection_item', $item, 'field_ds_position'));
-        $variables['field_ds_position'] = (isset($ds_position['tid'])?taxonomy_term_load($ds_position['tid'])->name:'');
+        $description_section[$index]['field_ds_position'] = (isset($ds_position['tid'])?taxonomy_term_load($ds_position['tid'])->name:'');
+        $index++;
       }
-      if ($field_ds_link_url != '') {
-        $variables['ds_link_tag'] = l($field_ds_link_label, $field_ds_link_url, array('attributes' => array('target' => $field_ds_link_target)));
-      }    
+      if (isset($description_section))
+        $variables['description_section'] = $description_section;      
     }
   }
   /** Description Section End **/
@@ -246,7 +252,7 @@ function characterunite_preprocess_node(&$variables, $hook) {
         if ($download_link_count > 0) {
           for($link = 0; $link < $download_link_count; $link++) {
             if ($download_link[$link]['url'] != '')
-            $file_download_link_tag[$link]['link'] = '<p>'.l($download_link[$file]['title'], file_create_url($download_link[$file]['url']), array('attributes' => array('target' => '_blank', 'class' => 'cta uppercase'))).'</p>';
+            $file_download_link_tag[$link]['link'] = '<p>'.l($download_link[$link]['title'], file_create_url($download_link[$link]['url']), array('attributes' => array('target' => '_blank', 'class' => 'cta uppercase'))).'</p>';
           }
         }
 
@@ -282,6 +288,7 @@ function characterunite_preprocess_node(&$variables, $hook) {
       foreach ($field_link_sections as $field_link_section) {
         $field_link_section_items[] = entity_revision_load('field_collection_item', $field_link_section['revision_id']); //load current revision of collection
       }
+      $index = 0;
       foreach ($field_link_section_items as $item) {
         $link_title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_link_title_1'));
         $field_link_title_1 = (isset($link_title_1['value'])?$link_title_1['value']:'');
@@ -290,20 +297,21 @@ function characterunite_preprocess_node(&$variables, $hook) {
         $field_link_title_2 = (isset($link_title_2['value'])?$link_title_2['value']:'');
 
         $field_links = field_get_items('field_collection_item', $item, 'field_links');
-      }
-      $link_section['field_link_title_1'] = $field_link_title_1;
-      $link_section['field_link_title_2'] = $field_link_title_2;
-      $field_links_count = count($field_links);
-      if ($field_links_count > 0) {
-        for($take_action = 0; $take_action < $field_links_count; $take_action++) {
-          if ($field_links[$take_action]['url'] != '') {
-            if (substr($field_links[$take_action]['url'], 0, 4) != 'http' && substr($field_links[$take_action]['url'], 0, 1) != '/') {
-              //$field_links[$take_action]['url'] = '/'.$field_links[$take_action]['url'];
-            }      
-            $related_links = '<a href="'.$field_links[$take_action]['url'].'" class="cta uppercase" target="_blank">'.$field_links[$take_action]['title'].'</a>';
-            $link_section['related_links'][$take_action]['links'] = $related_links;
+        
+        $link_section[$index]['field_link_title_1'] = $field_link_title_1;
+        $link_section[$index]['field_link_title_2'] = $field_link_title_2;
+        $field_links_count = count($field_links);
+        if ($field_links_count > 0) {
+          for($take_action = 0; $take_action < $field_links_count; $take_action++) {
+            if ($field_links[$take_action]['url'] != '') {
+              if (substr($field_links[$take_action]['url'], 0, 4) != 'http' && substr($field_links[$take_action]['url'], 0, 1) != '/' && $field_links[$take_action]['url'] != '') {
+                $field_links[$take_action]['url'] = '/'.$field_links[$take_action]['url'];
+              }      
+              $related_links = '<a href="'.$field_links[$take_action]['url'].'" class="cta uppercase" target="_blank">'.$field_links[$take_action]['title'].'</a>';
+              $link_section[$index]['related_links'][$take_action]['links'] = $related_links;
+            }
           }
-        }
+        }        
       }
       $variables['link_section'] = $link_section;
     }
@@ -341,7 +349,10 @@ function characterunite_preprocess_node(&$variables, $hook) {
         if ($field_related_videos_title_1 != '' || $field_related_videos_title_2 != '') {
           $related_videos_link_tag = '';
           if ($field_related_videos_link_url != '') {
-            $related_videos_link_tag = '<p>'.l($field_related_videos_link_label, $field_related_videos_link_url, array('attributes' => array('target' => $field_related_videos_link_target, 'class' => 'uppercase'))).'</p>';
+            if (substr($field_related_videos_link_url, 0, 4) != 'http' && substr($field_related_videos_link_url, 0, 1) != '/') {
+              $field_related_videos_link_url = '/'.$field_related_videos_link_url;
+            }
+            $related_videos_link_tag = '<p><a href="'.$field_related_videos_link_url.'" class="uppercase" target="'.$field_related_videos_link_target.'">'.$field_related_videos_link_label.'</a></p>';
           }
 
           $related_videos[$index]['field_related_videos_title_1'] = $field_related_videos_title_1;
@@ -371,7 +382,7 @@ function characterunite_preprocess_node(&$variables, $hook) {
               $field_rvi_video_link_label = (isset($rvi_video_link['title'])?$rvi_video_link['title']:'');  
               $field_rvi_video_link_target = (isset($rvi_video_link['attributes']['target'])?$rvi_video_link['attributes']['target']:'_self');
 
-              if (substr($field_rvi_video_link_url, 0, 4) != 'http' && substr($field_rvi_video_link_url, 0, 1) != '/') {
+              if (substr($field_rvi_video_link_url, 0, 4) != 'http' && substr($field_rvi_video_link_url, 0, 1) != '/' && $field_rvi_video_link_url != '') {
                 //$field_rvi_video_link_url = '/'.$field_rvi_video_link_url;
               }
 
@@ -474,7 +485,7 @@ function characterunite_preprocess_node(&$variables, $hook) {
             $related_images_right = $related_images;
           }
         }
-        $index++;
+        $index++;$related_images = array();
       }
       if (isset($related_images_left))
         $variables['related_images_left'] = $related_images_left;
@@ -656,6 +667,77 @@ function characterunite_preprocess_node(&$variables, $hook) {
       $variables['video_hub'] = $video_hub;    
   }
   /** Video HUB End **/
+
+  /** Take Action Section Start **/
+  if(!empty($node->field_issues_takeaction_section)) {
+
+    $take_action = array();
+    $field_issues_takeaction_sections = field_get_items('node', $node, 'field_issues_takeaction_section');
+
+    if (!empty($field_issues_takeaction_sections)) {
+      $field_issues_takeaction_sections_items = array();
+      foreach ($field_issues_takeaction_sections as $field_issues_takeaction_section) {
+        $field_issues_takeaction_sections_items[] = entity_revision_load('field_collection_item', $field_issues_takeaction_section['revision_id']); //load current revision of collection
+      }
+      $index = 0;
+      foreach ($field_issues_takeaction_sections_items as $item) {
+        $title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_take_action_title_1'));
+        $take_action[$index]['field_take_action_title_1'] = (isset($title_1['value'])?$title_1['value']:'');
+
+        $title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_take_action_title_2'));
+        $take_action[$index]['field_take_action_title_2'] = (isset($title_2['value'])?$title_2['value']:'');
+
+        $take_action_list = field_get_items('field_collection_item', $item, 'field_take_action_list');
+        if ($take_action_list != '') {
+          $take_action_list_count = count($take_action_list);
+          for ($i = 0; $i < $take_action_list_count; $i++) {
+            $field_take_action_list[$i]['value'] = (isset($take_action_list[$i]['value'])?$take_action_list[$i]['value']:'');
+          }
+          $take_action[$index]['field_take_action_list'] = $field_take_action_list;
+        }
+        $index++;
+      }
+    }
+    if (isset($take_action))
+      $variables['take_action'] = $take_action;    
+  }
+  /** Take Action Section Start **/
+  
+  /** Facts Section Start **/
+  if(!empty($node->field_issues_facts_section)) {
+
+    $facts = array();
+    $field_issues_facts_sections = field_get_items('node', $node, 'field_issues_facts_section');
+
+    if (!empty($field_issues_facts_sections)) {
+      $field_issues_facts_sections_items = array();
+      foreach ($field_issues_facts_sections as $field_issues_facts_section) {
+        $field_issues_facts_sections_items[] = entity_revision_load('field_collection_item', $field_issues_facts_section['revision_id']); //load current revision of collection
+      }
+      $index = 0;
+      foreach ($field_issues_facts_sections_items as $item) {
+        $title_1 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_facts_title_1'));
+        $facts[$index]['field_facts_title_1'] = (isset($title_1['value'])?$title_1['value']:'');
+
+        $title_2 = characterunite_reset(field_get_items('field_collection_item', $item, 'field_facts_title_2'));
+        $facts[$index]['field_facts_title_2'] = (isset($title_2['value'])?$title_2['value']:'');
+
+        $facts_list = field_get_items('field_collection_item', $item, 'field_facts_list');
+        if ($facts_list != '') {
+          $facts_list_count = count($facts_list);
+          for ($i = 0; $i < $facts_list_count; $i++) {
+            $field_facts_list[$i]['value'] = (isset($facts_list[$i]['value'])?$facts_list[$i]['value']:'');
+          }
+          $facts[$index]['field_facts_list'] = $field_facts_list;
+        }
+        $index++;
+      }
+    }
+    if (isset($facts))
+      $variables['facts'] = $facts;    
+  }
+  /** Facts Section Start **/
+  
   
 }
 
