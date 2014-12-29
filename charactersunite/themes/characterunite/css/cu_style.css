@@ -1623,7 +1623,7 @@ strong {
 	line-height:10px;
 	font-weight:bold;
 	text-decoration: none;
-	color:#646464;
+	color:#646464 !important;
 }
 .relatedVideosText a:hover {
 	text-decoration: underline;
@@ -1905,6 +1905,7 @@ strong {
 	float:left;
 	clear:none;
 	width:280px;
+  height:60px;
 }
 .mod.full .copy .relatedVideos.even {
 	margin-left:60px;
@@ -1948,6 +1949,9 @@ strong {
 	font-size: .9em;
 	line-height: 1.33em;
 	margin: 25px 0px 22px 0px;
+}
+.mod.solid p:first-child {
+  margin-top:0px;
 }
 .mod.solid sub {
 	color: white;
@@ -2094,12 +2098,12 @@ strong {
 
 
 .mod .relatedVideos a {
-	text-transform: uppercase;
+	/*text-transform: uppercase;
 	text-decoration: none;
-	color:#252525;
+	color:#252525;*/
 }
 .mod .relatedVideos h2 {
-	color:#252525;
+	/*color:#252525;*/
 }
 .mod .sponsor,
 .mod.solid a.sponsor {
@@ -2343,6 +2347,7 @@ strong {
 	width:950px;
 	/* font-size:31px; */
 	font-size:2.4em;
+  height:auto;
 }
 
 .no-sub {

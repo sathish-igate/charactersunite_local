@@ -533,21 +533,6 @@ function characterunite_preprocess_node(&$variables, $hook) {
   $variables['field_issues_banner_link'] = (isset($issues_banner_link['url'])?$issues_banner_link['url']:'');
   $variables['field_issues_banner_target'] = (isset($issues_banner_link['attributes']['target'])?$issues_banner_link['attributes']['target']:'');
 
-  $take_action_title_1 = characterunite_reset(field_get_items('node', $node, 'field_issues_take_action_title_1'));
-  $variables['field_issues_take_action_title_1'] = (isset($take_action_title_1['value'])?$take_action_title_1['value']:'');
-
-  $take_action_title_2 = characterunite_reset(field_get_items('node', $node, 'field_issues_take_action_title_2'));
-  $variables['field_issues_take_action_title_2'] = (isset($take_action_title_2['value'])?$take_action_title_2['value']:'');
-
-  $variables['field_issues_take_action_list'] = field_get_items('node', $node, 'field_issues_take_action_list');
-  
-  $facts_title_1 = characterunite_reset(field_get_items('node', $node, 'field_issues_facts_title_1'));
-  $variables['field_issues_facts_title_1'] = (isset($facts_title_1['value'])?$facts_title_1['value']:'');
-
-  $facts_title_2 = characterunite_reset(field_get_items('node', $node, 'field_issues_facts_title_2'));
-  $variables['field_issues_facts_title_2'] = (isset($facts_title_2['value'])?$facts_title_2['value']:'');
-
-  $variables['field_issues_facts_list'] = (field_get_items('node', $node, 'field_issues_facts_list'));  
   /** ISSUES Variables End ***/
 
   /** Biography List Start **/

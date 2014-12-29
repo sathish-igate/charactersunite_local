@@ -118,34 +118,6 @@
         </div>
       <?php endif; ?>
 
-			<?php /* if (trim($field_issues_take_action_title_1) != '' && trim($field_issues_take_action_title_2) != '' || 
-                (trim($field_issues_take_action_list) != '' && count($field_issues_take_action_list) > 0)): ?>
-        <div class="takeActionFrame">
-          <div class="takeActionHeader">
-            <h2 class="blackhead">
-              <?php print (!empty($field_issues_take_action_title_1)?$field_issues_take_action_title_1:'');?> 
-              <strong>
-                <?php print (!empty($field_issues_take_action_title_2)?$field_issues_take_action_title_2:'');?>
-              </strong>
-            </h2>
-          </div>
-          <div class="takeActionSection">
-            <?php if (isset($field_issues_take_action_list) && count($field_issues_take_action_list) > 0): ?>
-              <ul>
-                <?php $field_issues_take_action_list_count = count($field_issues_take_action_list); ?>
-                <?php for($take_action = 0; $take_action < $field_issues_take_action_list_count; $take_action++): ?>
-                  <li class="takeAction clearfix">
-                      <header>
-                        <?php print $field_issues_take_action_list[$take_action]['value']; ?>
-                      </header>
-                  </li>
-                <?php endfor; ?>
-              </ul>
-            <?php endif; ?>
-          </div>
-        </div>
-      <?php endif; */ ?>
-
 			<?php if (isset($take_action) && count($take_action) > 0): ?>
         <?php foreach ($take_action as $id => $take_action_fields): ?>   
           <div class="takeActionFrame">
@@ -174,32 +146,6 @@
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
-
-			<?php /* if (trim($field_issues_facts_title_1) != '' || trim($field_issues_facts_title_2) != '' || 
-            (trim($field_issues_facts_list != '') && count($field_issues_facts_list) > 0)): ?>      
-        <div class="resourcesAndFactsFrame">
-          <div class="resourcesAndFactsHeader">
-            <h2 class="blackhead">
-              <?php print (!empty($field_issues_facts_title_1)?$field_issues_facts_title_1:'');?> 
-              <strong>
-                <?php print (!empty($field_issues_facts_title_2)?$field_issues_facts_title_2:'');?>
-              </strong>
-            </h2>
-          </div>
-          <div class="theFactsSection">
-            <?php if (trim($field_issues_facts_list != '') && count($field_issues_facts_list) > 0): ?>
-              <ul>
-                <?php $field_issues_facts_list_count = count($field_issues_facts_list); ?>
-                <?php for($facts_list = 0; $facts_list < $field_issues_facts_list_count; $facts_list++): ?>					
-                  <li>
-                    <?php print $field_issues_facts_list[$facts_list]['value']; ?>
-                  </li>
-                <?php endfor; ?>
-              </ul>
-            <?php endif; ?>
-          </div>
-        </div>
-      <?php endif; */ ?>
 
 			<?php if (isset($facts) && count($facts) > 0): ?>
         <?php foreach ($facts as $id => $facts_fields): ?>   
