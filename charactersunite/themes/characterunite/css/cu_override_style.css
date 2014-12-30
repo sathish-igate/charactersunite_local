@@ -823,3 +823,36 @@ img.thumbnailMid {
   top:40px;
   left:80px;
 }
+
+
+/** Footer **/
+
+div.footer-wrapper {
+	font-size:.85em;
+	line-height:2.5em;
+	color:#dce0df;
+	font-weight:normal;
+}
+div.footer-wrapper .credits a {
+	color:#DCE0DF;
+	text-decoration: none;
+}
+div.footer-wrapper .credits a:hover {
+	text-decoration: none;
+}
+div.footer-wrapper .credits {
+	float:right;
+	text-align:right;
+	position: relative;
+	top:7px;
+}
+div.footer-wrapper .totals {
+	float:left;
+	text-align:left;
+	position: relative;
+	top: 10px;
+}
+div.footer-wrapper .totals img {
+	position: relative;
+	top:10px;
+}

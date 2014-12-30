@@ -759,3 +759,21 @@ function characterunite_reset($array) {
   if (is_array($array))
   return reset($array);
 }
+
+/**
+ * Implements theme_preprocess_page().
+ */
+function characterunite_preprocess_page(&$variables) {
+  $theme_path = drupal_get_path('theme', 'characterunite');
+  $node = menu_get_object();
+  if (isset($variables['node']->type) && $variables['node']->type == 'unite') {
+    $variables['theme_hook_suggestions'][] = 'page__node__' . $variables['node']->type;
+    drupal_add_css($theme_path . '/css/cu_unite-against-bullying.css');
+    drupal_add_css($theme_path . '/css/cu_foundation.css');
+    drupal_add_css($theme_path . '/css/cu_unite-against-bullying-helper.css');
+    $variables['page']['field_unite_video_id'] = characterunite_reset(field_get_items('node', $node, 'field_unite_video_id'));
+    $variables['page']['field_unite_video_description'] = characterunite_reset(field_get_items('node', $node, 'field_unite_video_description'));
+    $variables['page']['field_unite_billboard'] = characterunite_reset(field_get_items('node', $node, 'field_unite_billboard'));
+    $variables['page']['field_unite_social_section'] = characterunite_reset(field_get_items('node', $node, 'field_unite_social_section'));
+  }
+}
