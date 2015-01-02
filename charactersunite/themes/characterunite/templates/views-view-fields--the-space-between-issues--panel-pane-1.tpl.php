@@ -50,5 +50,5 @@
         <?php print  l($row->field_field_sbi_section_link[0]['raw']['title'], $row->field_field_sbi_section_link[0]['raw']['url'], array('attributes' => array('class' => 'cta uppercase'))); ?>
       <?php endif; ?>
     </div>
-  </div>  
-<?php endif; ?>  
+  </div>
+<?php endif; ?>

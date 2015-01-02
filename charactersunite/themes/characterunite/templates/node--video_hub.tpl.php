@@ -80,15 +80,15 @@
 
 ?>
 
-	<div class="showcaseMain">
-		<?php if (isset($field_video_hub_description) && !empty($field_video_hub_description)):?>
+  <div class="showcaseMain">
+    <?php if (isset($field_video_hub_description) && !empty($field_video_hub_description)):?>
       <?php if(strip_tags($field_video_hub_description) == $field_video_hub_description ): ?>
         <p><?php print $field_video_hub_description; ?></p>
       <?php else: ?>
         <?php print $field_video_hub_description; ?>
       <?php endif; ?>
     <?php endif; ?>
-		<?php if (isset($video_hub) && count($video_hub) > 0):?>
+    <?php if (isset($video_hub) && count($video_hub) > 0):?>
       <?php foreach ($video_hub as $id => $mainlist): ?>
         <div class="showcase">
           <?php if ($mainlist['field_video_hub_category'] != ''): ?>
@@ -125,5 +125,4 @@
         </div>
       <?php endforeach; ?>
     <?php endif; ?>
-	</div>
-	<!-- showcaseMain end -->
+  </div> <!-- showcaseMain end -->

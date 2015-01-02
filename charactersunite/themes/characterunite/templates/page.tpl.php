@@ -85,81 +85,72 @@
  * @see html.tpl.php
  */
 ?>
-<div id="page-wrapper"><div id="page">
-
-	<?php print render($page['header']); ?>
-
-
-	<div id="main-container" class="clearfix">
-		<div id="nav-container" class="wrapper clearfix">
-			<?php if ($main_menu): ?>
-			  <div id="main-menu" class="navigation">
-				<?php 
-				  if (module_exists('i18n_menu')) {
-					$main_menu_tree = i18n_menu_translated_tree(variable_get('menu_main_links_source', 'main-menu'));
-				  } else {
-					$main_menu_tree = menu_tree(variable_get('menu_main_links_source', 'main-menu'));
-				  }
-				  print drupal_render($main_menu_tree);
-				?>				
-			  </div> <!-- /#main-menu -->
-			<?php endif; ?>
-			<?php if ($page['social']): ?>
-				<div class="social">
-					<?php print render($page['social']); ?>
-				</div>
-			<?php endif; ?>			
-		</div>
-	
- 
-		<div id="main" class="wrapper clearfix">
-      <div class="initiatives">
-        <div class="initiativesHeader">
-					<?php  if ($breadcrumb): ?>
-						<div id="breadcrumbs"><?php print $breadcrumb; ?></div>
-					<?php endif;  ?>
-					<?php if ($tabs): ?>
-						<?php print render($tabs); ?>
-					<?php endif; ?>
-          <?php  if (!$is_front): ?>
-            <?php if (isset($node->field_override_title[LANGUAGE_NONE]) && $node->field_override_title[LANGUAGE_NONE][0]['value'] == 1 && $node->field_display_title[LANGUAGE_NONE][0]['value'] != ''): ?>
-              <div class="initTitle"><?php print $node->field_display_title[LANGUAGE_NONE][0]['value']; ?></div>
-            <?php else: ?>
-              <div class="initTitle"><?php print drupal_get_title(); ?></div>
+<div id="page-wrapper">
+  <div id="page">
+    <?php print render($page['header']); ?>
+    <div id="main-container" class="clearfix">
+      <div id="nav-container" class="wrapper clearfix">
+        <?php if ($main_menu): ?>
+          <div id="main-menu" class="navigation">
+          <?php 
+            if (module_exists('i18n_menu')) {
+            $main_menu_tree = i18n_menu_translated_tree(variable_get('menu_main_links_source', 'main-menu'));
+            } else {
+            $main_menu_tree = menu_tree(variable_get('menu_main_links_source', 'main-menu'));
+            }
+            print drupal_render($main_menu_tree);
+          ?>
+          </div> <!-- /#main-menu -->
+        <?php endif; ?>
+        <?php if ($page['social']): ?>
+          <div class="social">
+            <?php print render($page['social']); ?>
+          </div>
+        <?php endif; ?>
+      </div>
+      <div id="main" class="wrapper clearfix">
+        <div class="initiatives">
+          <div class="initiativesHeader">
+            <?php  if ($breadcrumb): ?>
+              <div id="breadcrumbs"><?php print $breadcrumb; ?></div>
+            <?php endif;  ?>
+            <?php if ($tabs): ?>
+              <?php print render($tabs); ?>
             <?php endif; ?>
-            <div class="wrapper clearfix" id="subnav-container">
-              <div class="subnav">
-              <?php if ($page['featured']): ?>
-                <div class="subnav-tabs">
-                  <?php print render($page['featured']); ?>
-                </div>
+            <?php  if (!$is_front): ?>
+              <?php if (isset($node->field_override_title[LANGUAGE_NONE]) && $node->field_override_title[LANGUAGE_NONE][0]['value'] == 1 && $node->field_display_title[LANGUAGE_NONE][0]['value'] != ''): ?>
+                <div class="initTitle"><?php print $node->field_display_title[LANGUAGE_NONE][0]['value']; ?></div>
+              <?php else: ?>
+                <div class="initTitle"><?php print drupal_get_title(); ?></div>
               <?php endif; ?>
+              <div class="wrapper clearfix" id="subnav-container">
+                <div class="subnav">
+                <?php if ($page['featured']): ?>
+                  <div class="subnav-tabs">
+                    <?php print render($page['featured']); ?>
+                  </div>
+                <?php endif; ?>
+                </div>
               </div>
-            </div>            
-          <?php endif; ?>
-        </div>		
-				<?php print render($page['content']); ?>				
-			</div>
-		</div> 		
-	</div>
-	<!--/#main, /#main-wrapper -->
-
-	<div id="footer-container">
-		<footer class="wrapper">
-			<div class="totals">
-				<!-- AddThis Button BEGIN -->
-				<div class="addthis_toolbox addthis_default_style ">
-				<a class="addthis_button_tweet"  addthis:title="USA Network's Characters Unite is dedicated to combating hate, prejudice and discrimination."></a>
-				<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-				</div>
-				<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4f08e1e35b6b8f8a"></script>
-				<!-- AddThis Button END -->
-			</div>
-			<div class="credits">
-				<a href="http://www.usanetwork.com/" rel="external" target="_blank">usa network</a>  &bull;  <a href="http://www.comcast.com/Corporate/About/CorporateInfo/independent-programming.html?SCRedirect=true" rel="external" target="_blank">Independent Programming Report</a> &bull; <a href="http://www.usanetwork.com/terms/" rel="external" target="_blank">Terms of Service</a> &bull; <a href="http://www.usanetwork.com/privacy/" rel="external" target="_blank">Privacy Policy</a> &bull; NBCUniversal Entertainment Group. All Rights Reserved
-			</div>
-		</footer>
-	</div>
-
-
-</div></div> <!-- /#page, /#page-wrapper -->
+            <?php endif; ?>
+          </div>
+          <?php print render($page['content']); ?>
+        </div>
+      </div>  <!-- /#main -->
+    </div> <!-- /#main-container -->
+    <div id="footer-container">
+      <footer class="wrapper">
+        <div class="totals">
+          <!-- AddThis Button BEGIN -->
+          <div class="addthis_toolbox addthis_default_style ">
+          <a class="addthis_button_tweet"  addthis:title="USA Network's Characters Unite is dedicated to combating hate, prejudice and discrimination."></a>
+          <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+          </div>
+          <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4f08e1e35b6b8f8a"></script>
+          <!-- AddThis Button END -->
+        </div>
+        <?php print render($page['footer']); ?>
+      </footer>
+    </div>  <!-- /#footer-container -->
+  </div> <!-- /#page -->
+</div> <!-- /#page-wrapper -->

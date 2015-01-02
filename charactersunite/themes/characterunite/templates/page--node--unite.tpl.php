@@ -85,89 +85,94 @@
  * @see html.tpl.php
  */
 ?>
-  <div class="row">
-    <div class="large-12 header">
-      <div class="logos">
-        <div class="unite-live left"></div>
-        <div class="sponsors-logos left">
-          <div class="rr-logo left"></div>
-          <a class="left" href="http://www.flipthescriptnow.org/" target="_blank"> <div class="flip-logo left"></div>
-          </a>
-          <a class="left" href="http://www.charactersunite.com/" target="_blank"> <div class="usa-logo left"></div>
-          </a>
-        </div>
+<div class="row">
+  <div class="large-12 header">
+    <div class="logos">
+      <div class="unite-live left"></div>
+      <div class="sponsors-logos left">
+        <div class="rr-logo left"></div>
+        <a class="left" href="http://www.flipthescriptnow.org/" target="_blank"> <div class="flip-logo left"></div>
+        </a>
+        <a class="left" href="http://www.charactersunite.com/" target="_blank"> <div class="usa-logo left"></div>
+        </a>
       </div>
     </div>
   </div>
-  
-<div id="page-wrapper"><div id="page">
-	<div id="main-container" class="clearfix">
-		<div id="nav-container" class="wrapper clearfix">
-			<?php if ($main_menu): ?>
-			  <div id="main-menu" class="navigation">
-				<?php 
-				  if (module_exists('i18n_menu')) {
-					$main_menu_tree = i18n_menu_translated_tree(variable_get('menu_main_links_source', 'main-menu'));
-				  } else {
-					$main_menu_tree = menu_tree(variable_get('menu_main_links_source', 'main-menu'));
-				  }
-				  print drupal_render($main_menu_tree);
-				?>				
-			  </div> <!-- /#main-menu -->
-			<?php endif; ?>
-			<?php if ($page['social']): ?>
-				<div class="social">
-					<?php print render($page['social']); ?>
-				</div>
-			<?php endif; ?>			
-		</div>
-    <?php if (isset($page['field_unite_billboard'])): ?>
-      <div class="content-top">
-        <?php print $page['field_unite_billboard']['value']; ?>
-      </div>
-    <?php endif; ?>     
-    <?php if (isset($page['field_unite_video_id']) || isset($page['field_unite_video_description'])): ?>
-      <div class="content-mid">
-        <div class="trip">
-          <div class="content">
-            <?php if (isset($page['field_unite_video_id'])): ?>
-              <div class="video-box left">
-                <iframe src="http://player.theplatform.com/p/OyMl-B/oIChOKSBFJ6b/select/<?php print $page['field_unite_video_id']['value']; ?>" width="400" height="225" frameborder="0" scrolling="no"></iframe>
-              </div>
+</div> <!-- /row end -->
+
+<div id="page-wrapper">
+  <div id="page">
+    <div id="main-container" class="clearfix">
+      <div id="nav-container" class="wrapper clearfix">
+        <?php if ($main_menu): ?>
+          <div id="main-menu" class="navigation">
+          <?php 
+            if (module_exists('i18n_menu')) {
+            $main_menu_tree = i18n_menu_translated_tree(variable_get('menu_main_links_source', 'main-menu'));
+            } else {
+            $main_menu_tree = menu_tree(variable_get('menu_main_links_source', 'main-menu'));
+            }
+            print drupal_render($main_menu_tree);
+          ?>
+          </div> <!-- /#main-menu -->
+        <?php endif; ?>
+        <?php if ($page['social']): ?>
+          <div class="social">
+            <?php print render($page['social']); ?>
+          </div>
+        <?php endif; ?>
+      </div>  <!-- /#nav-container -->
+      <?php if (isset($page['field_unite_billboard_banner'])): ?>
+        <div class="content-top">
+          <div class="billboard">
+            <?php if (isset($page['field_unite_billboard_link'])): ?>
+              <a href="<?php print $page['field_unite_billboard_link']['url']; ?>" >
             <?php endif; ?>
-            <?php if (isset($page['field_unite_video_description'])): ?>
-              <div class="trip-win">
-                <?php print $page['field_unite_video_description']['value']; ?>
-              </div>
+              <img src="<?php print file_create_url($page['field_unite_billboard_banner']['uri']); ?>" />
+            <?php if (isset($page['field_unite_billboard_link'])): ?>
+              </a>
             <?php endif; ?>
           </div>
         </div>
-      </div>
-    <?php endif; ?>
-    <?php if (isset($page['field_unite_social_section'])): ?>
-      <div class="content-bottom">
-        <?php print $page['field_unite_social_section']['value']; ?>
-      </div>
-    <?php endif; ?>
-	</div>
-	<!--/#main, /#main-wrapper -->
+      <?php endif; ?>
+      <?php if (isset($page['field_unite_video_id']) || isset($page['field_unite_video_description'])): ?>
+        <div class="content-mid">
+          <div class="trip">
+            <div class="content">
+              <?php if (isset($page['field_unite_video_id'])): ?>
+                <div class="video-box left">
+                  <iframe src="http://player.theplatform.com/p/OyMl-B/oIChOKSBFJ6b/select/<?php print $page['field_unite_video_id']['value']; ?>" width="400" height="225" frameborder="0" scrolling="no"></iframe>
+                </div>
+              <?php endif; ?>
+              <?php if (isset($page['field_unite_video_description'])): ?>
+                <div class="trip-win">
+                  <?php print $page['field_unite_video_description']['value']; ?>
+                </div>
+              <?php endif; ?>
+            </div>
+          </div>
+        </div>
+      <?php endif; ?>
+      <?php if (isset($page['field_unite_social_section'])): ?>
+        <div class="content-bottom">
+          <?php print $page['field_unite_social_section']['value']; ?>
+        </div>
+      <?php endif; ?>
+    </div> <!-- /#main-container -->
 
-	<div id="footer-container">
-		<footer class="wrapper">
-			<div class="totals">
-				<!-- AddThis Button BEGIN -->
-				<div class="addthis_toolbox addthis_default_style ">
-				<a class="addthis_button_tweet"  addthis:title="USA Network's Characters Unite is dedicated to combating hate, prejudice and discrimination."></a>
-				<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-				</div>
-				<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4f08e1e35b6b8f8a"></script>
-				<!-- AddThis Button END -->
-			</div>
-			<div class="credits">
-				<a href="http://www.usanetwork.com/" rel="external" target="_blank">usa network</a>  &bull;  <a href="http://www.comcast.com/Corporate/About/CorporateInfo/independent-programming.html?SCRedirect=true" rel="external" target="_blank">Independent Programming Report</a> &bull; <a href="http://www.usanetwork.com/terms/" rel="external" target="_blank">Terms of Service</a> &bull; <a href="http://www.usanetwork.com/privacy/" rel="external" target="_blank">Privacy Policy</a> &bull; NBCUniversal Entertainment Group. All Rights Reserved
-			</div>
-		</footer>
-	</div>
-
-
-</div></div> <!-- /#page, /#page-wrapper -->
+    <div id="footer-container">
+      <footer class="wrapper">
+        <div class="totals">
+          <!-- AddThis Button BEGIN -->
+          <div class="addthis_toolbox addthis_default_style ">
+          <a class="addthis_button_tweet"  addthis:title="USA Network's Characters Unite is dedicated to combating hate, prejudice and discrimination."></a>
+          <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+          </div>
+          <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4f08e1e35b6b8f8a"></script>
+          <!-- AddThis Button END -->
+        </div>
+        <?php print render($page['footer']); ?>
+      </footer>
+    </div> <!-- /#footer-container -->
+  </div> <!-- /#page -->
+</div> <!-- /#page-wrapper -->

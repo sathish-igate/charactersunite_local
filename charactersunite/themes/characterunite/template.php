@@ -32,6 +32,8 @@ function characterunite_process_maintenance_page(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_node().
+ *
  * Override or insert variables into the node templates.
  *
  * @param $variables
@@ -376,12 +378,13 @@ function characterunite_preprocess_node(&$variables, $hook) {
 
               $rvi_video_thumbnail = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_thumbnail'));
               $field_rvi_video_thumbnail = (isset($rvi_video_thumbnail['uri'])?$rvi_video_thumbnail['uri']:'');
-
+              //$rvi_video_thumbnail = (field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_thumbnail'));
+              //$field_rvi_video_thumbnail = field_view_value('field_collection_item', $iteration_item, 'field_rvi_video_thumbnail', $rvi_video_thumbnail[0], array('type' => 'image','settings' => array('image_style' => 'thumbnail')));
               $rvi_video_link = characterunite_reset(field_get_items('field_collection_item', $iteration_item, 'field_rvi_video_link'));
               $field_rvi_video_link_url = (isset($rvi_video_link['url'])?$rvi_video_link['url']:'');  
               $field_rvi_video_link_label = (isset($rvi_video_link['title'])?$rvi_video_link['title']:'');  
               $field_rvi_video_link_target = (isset($rvi_video_link['attributes']['target'])?$rvi_video_link['attributes']['target']:'_self');
-
+      
               if (substr($field_rvi_video_link_url, 0, 4) != 'http' && substr($field_rvi_video_link_url, 0, 1) != '/' && $field_rvi_video_link_url != '') {
                 //$field_rvi_video_link_url = '/'.$field_rvi_video_link_url;
               }
@@ -733,12 +736,12 @@ function characterunite_menu_tree($variables) {
   return '<ul class="sf-menu clearfix">' . $variables['tree'] . '</ul>';
 }
 
-// Ouptuts site breadcrumbs with current page title appended onto trail
+/**
+ * Ouptuts site breadcrumbs with current page title appended onto trail
+ */
 function characterunite_breadcrumb($variables) {
   $breadcrumb = $variables['breadcrumb'];
   if (!empty($breadcrumb)) {
-    // Provide a navigational heading to give context for breadcrumb links to
-    // screen-reader users. Make the heading invisible with .element-invisible.
     $output = '<h2 class="element-invisible">' . t('You are here') . '</h2>';
     $crumbs = '<div class="breadcrumb">';
     $array_size = count($breadcrumb);
@@ -755,6 +758,10 @@ function characterunite_breadcrumb($variables) {
     return $crumbs;
   }
 }
+
+/**
+ * Array reset, is the argument is an array 
+ */
 function characterunite_reset($array) {
   if (is_array($array))
   return reset($array);
@@ -773,7 +780,8 @@ function characterunite_preprocess_page(&$variables) {
     drupal_add_css($theme_path . '/css/cu_unite-against-bullying-helper.css');
     $variables['page']['field_unite_video_id'] = characterunite_reset(field_get_items('node', $node, 'field_unite_video_id'));
     $variables['page']['field_unite_video_description'] = characterunite_reset(field_get_items('node', $node, 'field_unite_video_description'));
-    $variables['page']['field_unite_billboard'] = characterunite_reset(field_get_items('node', $node, 'field_unite_billboard'));
     $variables['page']['field_unite_social_section'] = characterunite_reset(field_get_items('node', $node, 'field_unite_social_section'));
+    $variables['page']['field_unite_billboard_banner'] = characterunite_reset(field_get_items('node', $node, 'field_unite_billboard_banner'));
+    $variables['page']['field_unite_billboard_link'] = characterunite_reset(field_get_items('node', $node, 'field_unite_billboard_link'));
   }
 }

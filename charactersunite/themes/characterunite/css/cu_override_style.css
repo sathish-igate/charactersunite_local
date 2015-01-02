@@ -856,3 +856,10 @@ div.footer-wrapper .totals img {
 	position: relative;
 	top:10px;
 }
+
+/** Image **/
+.thumbnailMid {
+  border:0px;
+  width:180px;
+  margin-bottom: 30px;
+}

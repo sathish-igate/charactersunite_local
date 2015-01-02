@@ -79,67 +79,64 @@
  */
 
 ?>
-	<div class="initiativeMain bio-list">
-		<div id="colMain">
-      <?php if (isset($biography_list) && count($biography_list) > 0):?>
-        <?php foreach ($biography_list as $id => $mainlist): ?>
-          <?php if ($mainlist['field_bl_category_title'] != '' && $mainlist['field_bl_category_title'] != 'guest'): ?>
-            <section>
-              <h3>
-                <?php print $mainlist['field_bl_category_title']; ?>
-              </h3>
-            </section>
-          <?php endif;?>
-          <?php foreach ($mainlist as $subid => $sublist): ?>
-            <?php if (is_numeric($subid)): ?>
-              <?php $class = (($mainlist['field_bl_category_title'] == 'guest')?' class="guest" ':''); ?>
-              <article <?php print $class; ?> >
-              <?php if ($sublist['field_bl_section_thumbnail'] != ''): ?>
-                <?php $class = (($sublist['field_field_bl_section_info'] == '')?'partners-list':'featured'); ?>
-                <img class="<?php print $class; ?>" src="<?php print file_create_url($sublist['field_bl_section_thumbnail']); ?>" alt="<?php print $sublist['field_bl_section_title']; ?>" />
-              <?php endif; ?>
-                <section>
-                    <?php if ($sublist['field_bl_section_link_url'] != ''): ?>
-                      <h2>
-                        <?php print l($sublist['field_bl_section_title'], $sublist['field_bl_section_link_url'], array('attributes' => array('target' => $sublist['field_bl_section_link_target'], 'class' => 'uppercase')));?>
-                      </h2>
-                      <?php print $link = l($sublist['field_bl_section_link_title'], $sublist['field_bl_section_link_url'], array('attributes' => array('target' => $sublist['field_bl_section_link_target']))); ?>
-                    <?php else: ?>
-                      <h2><?php print $sublist['field_bl_section_title']; ?></h2>
-                    <?php endif; ?>
-                    <?php if ($sublist['field_bl_section_title_2'] != ''): ?>
-                      <p>
-                        <strong>
-                          <?php print $sublist['field_bl_section_title_2']; ?>
-                        </strong>
-                      </p>
-                    <?php endif; ?>
-                    <?php if ($sublist['field_field_bl_section_info'] != ''): ?>
-                      <p><?php print $sublist['field_field_bl_section_info']; ?></p>
-                    <?php endif; ?>
-                    <?php if ($sublist['field_bl_section_description'] != ''): ?>
-                      <?php if (strlen($sublist['field_bl_section_description']) > 350): ?>
-                        <span class="<?php print $subid;?>leftpane_desc" style="height:0px">
-                          <?php print $sublist['field_bl_section_description']; ?><br/>
-                          <p><?php print $link; ?></p>
-                        </span>
-                        <a class="<?php print $subid;?>leftpane_desc_more amore<?php print $subid;?>" href="javascript:;" onclick="LeftDesc('<?php print $subid;?>leftpane_desc', 'less', 0, '<?php print $subid;?>');">More</a>
-                        <a class="<?php print $subid;?>leftpane_desc_less amore<?php print $subid;?>" href="javascript:;" onclick="LeftDesc('<?php print $subid;?>leftpane_desc', 'more', 0, '<?php print $subid;?>');">Less</a>
-                      <?php else: ?>
+<div class="initiativeMain bio-list">
+  <div id="colMain">
+    <?php if (isset($biography_list) && count($biography_list) > 0):?>
+      <?php foreach ($biography_list as $id => $mainlist): ?>
+        <?php if ($mainlist['field_bl_category_title'] != '' && $mainlist['field_bl_category_title'] != 'guest'): ?>
+          <section>
+            <h3>
+              <?php print $mainlist['field_bl_category_title']; ?>
+            </h3>
+          </section>
+        <?php endif;?>
+        <?php foreach ($mainlist as $subid => $sublist): ?>
+          <?php if (is_numeric($subid)): ?>
+            <?php $class = (($mainlist['field_bl_category_title'] == 'guest')?' class="guest" ':''); ?>
+            <article <?php print $class; ?> >
+            <?php if ($sublist['field_bl_section_thumbnail'] != ''): ?>
+              <?php $class = (($sublist['field_field_bl_section_info'] == '')?'partners-list':'featured'); ?>
+              <img class="<?php print $class; ?>" src="<?php print file_create_url($sublist['field_bl_section_thumbnail']); ?>" alt="<?php print $sublist['field_bl_section_title']; ?>" />
+            <?php endif; ?>
+              <section>
+                  <?php if ($sublist['field_bl_section_link_url'] != ''): ?>
+                    <h2>
+                      <?php print l($sublist['field_bl_section_title'], $sublist['field_bl_section_link_url'], array('attributes' => array('target' => $sublist['field_bl_section_link_target'], 'class' => 'uppercase')));?>
+                    </h2>
+                    <?php print $link = l($sublist['field_bl_section_link_title'], $sublist['field_bl_section_link_url'], array('attributes' => array('target' => $sublist['field_bl_section_link_target']))); ?>
+                  <?php else: ?>
+                    <h2><?php print $sublist['field_bl_section_title']; ?></h2>
+                  <?php endif; ?>
+                  <?php if ($sublist['field_bl_section_title_2'] != ''): ?>
+                    <p>
+                      <strong>
+                        <?php print $sublist['field_bl_section_title_2']; ?>
+                      </strong>
+                    </p>
+                  <?php endif; ?>
+                  <?php if ($sublist['field_field_bl_section_info'] != ''): ?>
+                    <p><?php print $sublist['field_field_bl_section_info']; ?></p>
+                  <?php endif; ?>
+                  <?php if ($sublist['field_bl_section_description'] != ''): ?>
+                    <?php if (strlen($sublist['field_bl_section_description']) > 350): ?>
+                      <span class="<?php print $subid;?>leftpane_desc" style="height:0px">
                         <?php print $sublist['field_bl_section_description']; ?><br/>
                         <p><?php print $link; ?></p>
-                      <?php endif; ?>                 
-                    <?php endif; ?>
-                </section>
-              </article>
-            <?php endif; ?>
-          <?php endforeach; ?>
+                      </span>
+                      <a class="<?php print $subid;?>leftpane_desc_more amore<?php print $subid;?>" href="javascript:;" onclick="LeftDesc('<?php print $subid;?>leftpane_desc', 'less', 0, '<?php print $subid;?>');">More</a>
+                      <a class="<?php print $subid;?>leftpane_desc_less amore<?php print $subid;?>" href="javascript:;" onclick="LeftDesc('<?php print $subid;?>leftpane_desc', 'more', 0, '<?php print $subid;?>');">Less</a>
+                    <?php else: ?>
+                      <?php print $sublist['field_bl_section_description']; ?><br/>
+                      <p><?php print $link; ?></p>
+                    <?php endif; ?>                 
+                  <?php endif; ?>
+              </section>
+            </article>
+          <?php endif; ?>
         <?php endforeach; ?>
-      <?php endif; ?>
-		</div>
-		<!-- initiativeLeft end -->
-		<div id="colSide">
-		</div>
-		<!-- initiativeRight end -->
-	</div>
-	<!-- initiativeMain end -->
+      <?php endforeach; ?>
+    <?php endif; ?>
+  </div> <!-- /#colMain -->
+  <div id="colSide">
+  </div>
+</div> <!-- initiativeMain end -->

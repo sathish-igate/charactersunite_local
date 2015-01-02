@@ -400,13 +400,3 @@ a.active {
   width: 100%;
   background: url('../img/bg-body.jpg') center 25px no-repeat;
 }
-.billboard-concert {
-  /*background: url('../img/logos_carly.png') no-repeat;*/
-  background: url("../img/logos_carly.png") repeat scroll 0 0 #000000;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  box-shadow: 0 0 14px rgba(50, 50, 0, 0.64);
-  height: 100%;
-  margin: 0 auto;
-  width: 878px;  
-}

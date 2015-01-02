@@ -14,6 +14,7 @@ scripts[] = js/jquery.fancybox.js
 scripts[] = js/script.js
 
 regions[header] = Header
+regions[header_unite] = Unite Live Header
 regions[help] = Help
 regions[page_top] = Page top
 regions[page_bottom] = Page bottom
