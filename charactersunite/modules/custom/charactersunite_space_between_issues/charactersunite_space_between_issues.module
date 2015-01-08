@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Charactersunite Space Between Issues feature.
+ */
+
+include_once 'charactersunite_space_between_issues.features.inc';

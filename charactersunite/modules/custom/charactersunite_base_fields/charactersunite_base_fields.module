@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Charactersunite Base Fields feature.
+ */
+
+include_once 'charactersunite_base_fields.features.inc';

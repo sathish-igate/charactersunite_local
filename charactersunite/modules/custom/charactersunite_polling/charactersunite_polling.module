@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Charactersunite Polling feature.
+ */
+
+include_once 'charactersunite_polling.features.inc';
