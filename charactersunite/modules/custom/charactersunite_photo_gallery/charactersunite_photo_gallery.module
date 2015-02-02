@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Charactersunite Photo Gallery feature.
+ */
+
+include_once 'charactersunite_photo_gallery.features.inc';
