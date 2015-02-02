@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Charactersunite Panels feature.
+ */
+
+include_once 'charactersunite_panels.features.inc';

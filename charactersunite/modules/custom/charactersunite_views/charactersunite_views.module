@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Charactersunite Views feature.
+ */
+
+include_once 'charactersunite_views.features.inc';
