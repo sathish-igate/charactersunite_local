@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Charactersunite Video Hub feature.
- */
-
-include_once 'charactersunite_video_hub.features.inc';

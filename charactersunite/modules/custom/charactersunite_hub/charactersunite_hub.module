@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Charactersunite Hub feature.
- */
-
-include_once 'charactersunite_hub.features.inc';

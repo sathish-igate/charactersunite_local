@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Charactersunite Home Page feature.
- */
-
-include_once 'charactersunite_home_page.features.inc';

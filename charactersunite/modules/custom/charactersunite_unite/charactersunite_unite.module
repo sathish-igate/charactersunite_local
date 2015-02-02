@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Charactersunite Unite feature.
- */
-
-include_once 'charactersunite_unite.features.inc';

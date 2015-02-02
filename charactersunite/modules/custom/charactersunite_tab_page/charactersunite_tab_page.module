@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Charactersunite Tab Page feature.
- */
-
-include_once 'charactersunite_tab_page.features.inc';

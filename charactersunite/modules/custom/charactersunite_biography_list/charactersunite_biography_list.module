@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Charactersunite Biography List feature.
- */
-
-include_once 'charactersunite_biography_list.features.inc';

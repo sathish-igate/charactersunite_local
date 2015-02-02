@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Charactersunite Press feature.
- */
-
-include_once 'charactersunite_press.features.inc';
