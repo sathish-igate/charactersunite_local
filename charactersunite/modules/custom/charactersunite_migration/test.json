@@ -1,0 +1,19 @@
+[{
+    "title": "test 3",
+    "body": {
+        "und": [{
+            "value": "\u003Cp\u003Etes body\u003C\/p\u003E",
+            "summary": "",
+            "format": "wysiwyg_mini",
+            "safe_value": "\u003Cp\u003Etes body\u003C\/p\u003E",
+            "safe_summary": ""
+        }]
+    },
+    "field_test_text": {
+        "und": [{
+            "value": "test text sample",
+            "format": null,
+            "safe_value": "test text sample"
+        }]
+    }
+}]

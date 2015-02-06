@@ -1,0 +1,42 @@
+<?php
+abstract class CUAnnouncementMigration extends Migration {
+  public function __construct() {
+    parent::__construct();
+    
+    $this->description = t('Migrate test');
+    
+    $items_url = 'test.json';
+    $item_ID = 'title';
+    $fields = array(   
+      'title' => t('title'),
+      'body' => t('body'),
+      'field_test_text' => t('field_test_text'),
+    );
+    
+    $this->source = new MigrateSourceJSON($items_url, $item_ID, $fields);
+    $this->destination = new MigrateDestinationNode('test');
+    $this->map = new MigrateSQLMap($this->machineName,
+      array(
+          'label' => array('type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'description' => 'Person Id',
+        ),
+      ),
+      MigrateDestinationNode::getKeySchema()
+    );
+    
+    
+    // Make the mappings
+    $this->addFieldMapping('title', 'title');
+    $this->addFieldMapping('body', 'body');
+    $this->addFieldMapping('uid', 'uid')
+    $this->addFieldMapping('type', 'type')->defaultValue('test');
+    $this->addFieldMapping('field_test_text', 'field_test_text');
+  }
+  
+  public function prepareRow($current_row) {
+    $current_row->uid = '1';
+    return TRUE;
+  }
+}

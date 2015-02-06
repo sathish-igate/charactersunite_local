@@ -1,0 +1,46 @@
+<?php
+function charactersunite_migration_flush_caches() {
+  MigrationBase::registerMigration('CuTestMigration', 'CuTest');
+  MigrationBase::registerMigration('CuHomePageMigration', 'CuHomePage');
+  MigrationBase::registerMigration('CuHomePageIterationsMigration', 'CuHomePageIterations');
+}
+
+/**
+ * Retrieve the right side images associated with a node from the migration database.
+ */
+function charactersunite_migration_retrieve_file($fid) {
+
+  $other_database = array(
+    'database' => 'devnbcuni',  // <--- Typically "publisher7_<sitename>"
+    'username' => 'root',
+    'password' => '',
+    'host' => 'localhost',
+    'port' => '',
+    'driver' => 'mysql',
+    'prefix' => '',
+  );
+  Database::addConnectionInfo('cu2db', 'default', $other_database);
+  db_set_active('cu2db');
+  
+  $file_query = db_select('file_managed', 'f');
+  $file_query->condition('f.fid', $fid, '=');
+  $file_query->fields('f', array('filename', 'uri', 'filemime', 'filesize', 'type', 'created', 'published'));
+  $results = $file_query->execute();
+
+  $images = array();
+
+  foreach ($results as $row) {
+    $current_image_data = array(
+      'filename' => $row->filename,
+      'uri' => $row->uri,
+      'filemime' => $row->filemime,
+      'filesize' => $row->filesize,
+      'type' => $row->type,
+      'created' => $row->created,
+      'published' => $row->published,
+    );
+    $images[] = drupal_json_encode($current_image_data);
+  }
+  db_set_active();
+  return $images;
+}

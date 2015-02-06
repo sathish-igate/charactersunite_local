@@ -1,0 +1,13 @@
+name = "Charactersunite Migration"
+description = "Module to migrate content to Drupal 7"
+package = "Development - CU"
+core = 7.x
+dependencies[] = migrate
+dependencies[] = migrate_ui
+dependencies[] = migrate_extras
+
+files[] = charactersunite_migration.module
+files[] = charactersunite_migration.migrate.inc
+files[] = cutest.inc
+files[] = homepage.inc
+files[] = homepageiteration.inc

@@ -1,0 +1,115 @@
+<?php
+class CuHomePageIterationsMigration extends Migration {
+  public function __construct($arguments = array()) {
+    
+    parent::__construct($arguments);
+    
+    $this->description = t('Migrate Home Page Iterations');
+    $this->dependencies = array('CuHomePage');
+    //$this->dependencies = array('File');
+
+    $source_fields = array(
+      'entity_id' => t('Entity ID'),
+      'field_home_scroll_title' => t('Home Page Scroll Section Title'),
+      'field_home_scroll_info' => t('Home Page Scroll Section Info'),
+      'field_home_scroll_link' => t('Home Page Scroll Section Link'),
+      'image_attachment' => t('Home Page Scroll Section Image'),
+      'image_attachment_filepath' => t('Image path'),
+      'image_attachment_type' => t('Image Type'),
+    );
+    
+    $other_database = array(
+      'database' => 'devnbcuni',  // <--- Typically "publisher7_<sitename>"
+      'username' => 'root',
+      'password' => '',
+      'host' => 'localhost',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => '',
+    );
+    Database::addConnectionInfo('cu2db', 'default', $other_database);
+    db_set_active('cu2db');
+
+    $query = db_select('node', 'n');
+    $query->condition('n.type', 'home_page', '=');
+    $query->addField('n', 'nid');
+    $query->leftJoin('field_data_field_home_scroll_section', 'section', 'n.nid = section.entity_id');
+    $query->addField('section', 'field_home_scroll_section_value');
+    $query->leftJoin('field_data_field_home_scroll_title', 'scroll_title', 'section.field_home_scroll_section_value = scroll_title.entity_id');
+    $query->addField('scroll_title', 'field_home_scroll_title_value');
+    $query->leftJoin('field_data_field_home_scroll_info', 'scroll_info', 'section.field_home_scroll_section_value = scroll_info.entity_id');
+    $query->addField('scroll_info', 'field_home_scroll_info_value');
+    $query->leftJoin('field_data_field_home_scroll_link', 'scroll_link', 'section.field_home_scroll_section_value = scroll_link.entity_id');
+    $query->addField('scroll_link', 'field_home_scroll_link_url');
+    $query->addField('scroll_link', 'field_home_scroll_link_title');
+    $query->addField('scroll_link', 'field_home_scroll_link_attributes');
+    $query->leftJoin('field_data_field_home_scroll_image', 'scroll_image', 'section.field_home_scroll_section_value = scroll_image.entity_id');
+    $query->addField('scroll_image', 'field_home_scroll_image_fid');
+
+    $this->source = new MigrateSourceSQL($query, array());
+    $this->destination = new MigrateDestinationFieldCollection('field_home_scroll_section', array('host_entity_type' => 'node') );
+    $this->machineName = 'CuHomePageIterations';
+    $this->map = new MigrateSQLMap($this->machineName,
+      array(
+        'field_home_scroll_section_value' => array(
+          'type' => 'int',
+        )
+      ),MigrateDestinationFieldCollection::getKeySchema());
+
+    
+    // Make the mappings
+    $this->addFieldMapping('host_entity_id', 'nid')
+      ->sourceMigration('CuHomePage')
+      ->description(t('NID'));
+    $this->addFieldMapping('field_home_scroll_title', 'field_home_scroll_title_value');
+    $this->addFieldMapping('field_home_scroll_info', 'field_home_scroll_info_value');
+    $this->addFieldMapping('field_home_scroll_link', 'field_home_scroll_link_url');
+    $this->addFieldMapping('field_home_scroll_link:title', 'field_home_scroll_link_title');
+    $this->addFieldMapping('field_home_scroll_link:attributes', 'field_home_scroll_link_attributes');
+
+    $this->addFieldMapping('field_home_scroll_image', 'image_attachment');
+    $this->addFieldMapping('field_home_scroll_image:uri', 'image_attachment_filepath');
+    $this->addFieldMapping('field_home_scroll_image:description', 'image_attachment_type');    
+    db_set_active();
+  }
+  
+  public function prepareRow($current_row) {
+    $other_database = array(
+      'database' => 'devnbcuni',  // <--- Typically "publisher7_<sitename>"
+      'username' => 'root',
+      'password' => '',
+      'host' => 'localhost',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => '',
+    );
+    Database::addConnectionInfo('cu2db', 'default', $other_database);
+    db_set_active('cu2db');
+    $query = db_select('field_data_field_home_scroll_image', 'scroll_image');
+    $query->condition('scroll_image.field_home_scroll_image_fid', $current_row->field_home_scroll_image_fid, '=');
+    $query->addField('scroll_image', 'field_home_scroll_image_fid');
+    $query->leftJoin('file_managed', 'file_managed', 'scroll_image.field_home_scroll_image_fid = file_managed.fid');
+    $query->addField('file_managed', 'filename');
+    $query->addField('file_managed', 'uri');
+    $query->addField('file_managed', 'filemime');
+    $query->addField('file_managed', 'type');
+    $query->addField('file_managed', 'published');
+    $query->orderBy('scroll_image.field_home_scroll_image_fid', 'ASC');
+    $result = $query->execute();
+
+    foreach ($result as $row) {
+      $field = array(
+        'filename' => $row->filename,
+        'filepath' => $row->uri,
+        'filemime' => $row->filemime,
+        'type' => $row->type,
+        'published' => $row->published,
+      );
+      $current_row->image_attachment[] = $field['filename'];
+      $current_row->image_attachment_filepath[] = 'http://cu.charactersunite.com/sites/charactersunite/files/' . $field['filepath'];
+      $current_row->image_attachment_type[] = $field['type'];
+    }
+    db_set_active();
+    return TRUE;
+  }
+}

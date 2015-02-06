@@ -1,0 +1,68 @@
+<?php
+class CuTestMigration extends Migration {
+  public function __construct($arguments = array()) {
+    
+    parent::__construct($arguments);
+    
+    $this->description = t('Migrate test');
+    
+    $source_fields = array(
+      'title' => t('The node ID of the  test'),
+    );
+    
+    $this->machineName = 'CuTest';
+    $this->map = new MigrateSQLMap($this->machineName,
+      array(
+        'nid' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'description' => 'D7 Unique Node ID',
+          'alias' => 'n',
+        )
+      ),MigrateDestinationNode::getKeySchema());
+
+    $other_database = array(
+      'database' => 'devnbcuni',  // <--- Typically "publisher7_<sitename>"
+      'username' => 'root',
+      'password' => '',
+      'host' => 'localhost',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => '',
+    );
+    Database::addConnectionInfo('cu2db', 'default', $other_database);
+    db_set_active('cu2db');
+    $query = db_select('devnbcuni.node', 'n');
+    $query->condition('n.type', 'test', '=');
+    $query->fields('n', array('nid', 'vid', 'title', 'uid', 'status', 'created', 'changed'));
+    
+    /*
+    $query = db_select('devnbcuni.node', 'n')
+      ->fields('n', array('nid', 'vid', 'type', 'language', 'title', 'uid', 'status', 'created', 'changed', 'comment', 'promote', 'sticky', 'tnid', 'translate'))
+      ->condition('n.type', 'announcement', '=');
+    $query->join('devnbcuni.users', 'u', 'n.uid = u.uid');
+    $query->addField('u', 'name');
+    $query->orderBy('n.changed');
+    */
+
+    $this->source = new MigrateSourceSQL($query, $source_fields);
+    $this->destination = new MigrateDestinationNode('test');
+
+    
+    // Make the mappings
+    //$this->addFieldMapping('nid', 'nid');
+    $this->addFieldMapping('title', 'title');
+    $this->addFieldMapping('uid', 'uid');
+    $this->addFieldMapping('status', 'status');
+    $this->addFieldMapping('created', 'created');
+    $this->addFieldMapping('changed', 'changed');
+    $this->addFieldMapping('language')->defaultValue('und');
+    db_set_active();
+  }
+  
+  public function prepareRow($current_row) {
+    $current_row->uid = '1';
+    return TRUE;
+  }
+}
